@@ -1,0 +1,3609 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Operational Dashboard Pro</title>
+
+<link rel="icon" type="image/png" href="op.png">
+
+<!-- Font -->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Orbitron:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --bg:#020304;
+    --panel:#070a0d;
+    --panel2:#0b1014;
+
+    --white:#ffffff;
+    --silver:#dce4e9;
+    --grey:#8d9aa3;
+
+    --cyan:#00eaff;
+    --cyan2:#00a8ff;
+    --blue:#176cff;
+
+    --danger:#ff335f;
+
+    --line:rgba(0,234,255,.22);
+    --glow:rgba(0,234,255,.45);
+}
+
+html,
+body{
+    min-height:100%;
+}
+
+html,
+body,
+button,
+input,
+textarea,
+select,
+a{
+    cursor:url('cursor.png'),auto;
+}
+
+body{
+    min-height:100vh;
+    padding:25px;
+    color:white;
+    background:
+        radial-gradient(circle at 15% 10%,rgba(0,234,255,.13),transparent 28%),
+        radial-gradient(circle at 85% 90%,rgba(0,110,255,.12),transparent 30%),
+        linear-gradient(135deg,#010203,#05080a 45%,#010203);
+    font-family:"Barlow Condensed","Compacta BT","Arial Narrow",Arial,sans-serif;
+    font-weight:700;
+    overflow-x:hidden;
+}
+
+
+/* =========================================================
+   MOVING BACKGROUND LIGHT
+========================================================= */
+
+body::before{
+    content:"";
+    position:fixed;
+    width:500px;
+    height:500px;
+    left:-180px;
+    top:-180px;
+    background:radial-gradient(
+        circle,
+        rgba(0,234,255,.18),
+        rgba(0,234,255,.04) 40%,
+        transparent 70%
+    );
+    filter:blur(35px);
+    animation:bgGlow 8s ease-in-out infinite alternate;
+    pointer-events:none;
+    z-index:-5;
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    width:550px;
+    height:550px;
+    right:-220px;
+    bottom:-220px;
+    background:radial-gradient(
+        circle,
+        rgba(0,100,255,.18),
+        rgba(0,100,255,.04) 40%,
+        transparent 70%
+    );
+    filter:blur(40px);
+    animation:bgGlow2 10s ease-in-out infinite alternate;
+    pointer-events:none;
+    z-index:-5;
+}
+
+@keyframes bgGlow{
+    from{
+        transform:translate(0,0) scale(1);
+    }
+    to{
+        transform:translate(180px,120px) scale(1.25);
+    }
+}
+
+@keyframes bgGlow2{
+    from{
+        transform:translate(0,0) scale(1);
+    }
+    to{
+        transform:translate(-140px,-100px) scale(1.2);
+    }
+}
+
+
+/* =========================================================
+   STAR / PARTICLE FIELD
+========================================================= */
+
+.stars{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:-4;
+    overflow:hidden;
+}
+
+.stars span{
+    position:absolute;
+    width:2px;
+    height:2px;
+    border-radius:50%;
+    background:#fff;
+    box-shadow:0 0 8px rgba(255,255,255,.9);
+    animation:twinkle 3s ease-in-out infinite;
+}
+
+.stars span:nth-child(1){left:8%;top:18%;animation-delay:.2s}
+.stars span:nth-child(2){left:18%;top:72%;animation-delay:1s}
+.stars span:nth-child(3){left:27%;top:38%;animation-delay:1.7s}
+.stars span:nth-child(4){left:38%;top:12%;animation-delay:.7s}
+.stars span:nth-child(5){left:49%;top:83%;animation-delay:2s}
+.stars span:nth-child(6){left:61%;top:28%;animation-delay:1.3s}
+.stars span:nth-child(7){left:73%;top:66%;animation-delay:.4s}
+.stars span:nth-child(8){left:84%;top:21%;animation-delay:1.8s}
+.stars span:nth-child(9){left:93%;top:49%;animation-delay:2.2s}
+.stars span:nth-child(10){left:54%;top:52%;animation-delay:.9s}
+.stars span:nth-child(11){left:12%;top:46%;animation-delay:1.4s}
+.stars span:nth-child(12){left:88%;top:81%;animation-delay:.3s}
+
+@keyframes twinkle{
+    0%,100%{
+        opacity:.2;
+        transform:scale(.7);
+    }
+    50%{
+        opacity:1;
+        transform:scale(1.8);
+    }
+}
+
+
+/* =========================================================
+   MAIN PANEL
+========================================================= */
+
+.glass-panel{
+    position:relative;
+    width:100%;
+    max-width:1450px;
+    margin:auto;
+
+    padding:25px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(12,17,21,.96),
+            rgba(3,6,8,.94)
+        );
+
+    border:1px solid rgba(0,234,255,.22);
+    border-radius:22px;
+
+    box-shadow:
+        0 35px 100px rgba(0,0,0,.9),
+        0 0 50px rgba(0,234,255,.06);
+
+    overflow:hidden;
+}
+
+
+/* =========================================================
+   ANIMATED BORDER
+========================================================= */
+
+.glass-panel::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    padding:1px;
+    border-radius:22px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(0,234,255,.9),
+            transparent,
+            rgba(0,150,255,.8),
+            transparent
+        );
+
+    background-size:300% 100%;
+
+    animation:borderRun 5s linear infinite;
+
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+
+    -webkit-mask-composite:xor;
+    mask-composite:exclude;
+
+    pointer-events:none;
+    z-index:10;
+}
+
+@keyframes borderRun{
+    0%{
+        background-position:0% 50%;
+    }
+    100%{
+        background-position:300% 50%;
+    }
+}
+
+
+/* =========================================================
+   VIDEO
+========================================================= */
+
+.bg-video-panel{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+
+    opacity:.10;
+
+    pointer-events:none;
+    z-index:0;
+
+    mix-blend-mode:screen;
+}
+
+
+/* =========================================================
+   LIGHT SWEEP
+========================================================= */
+
+.glass-panel::after{
+    content:"";
+    position:absolute;
+    top:-100%;
+    left:-30%;
+    width:18%;
+    height:300%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.05),
+            rgba(0,234,255,.18),
+            rgba(255,255,255,.04),
+            transparent
+        );
+
+    transform:rotate(18deg);
+    animation:lightSweep 7s linear infinite;
+
+    pointer-events:none;
+    z-index:2;
+}
+
+@keyframes lightSweep{
+    0%{
+        left:-40%;
+    }
+    100%{
+        left:140%;
+    }
+}
+
+
+/* =========================================================
+   CONTENT LAYER
+========================================================= */
+
+.top-row,
+.ticker,
+.menu-container,
+.divider,
+.tab-content{
+    position:relative;
+    z-index:5;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.top-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+}
+
+.logo-box{
+    display:flex;
+    align-items:center;
+}
+
+.logo-box img{
+    height:52px;
+    width:auto;
+
+    filter:
+        drop-shadow(0 0 8px rgba(0,234,255,.55))
+        drop-shadow(0 0 22px rgba(0,234,255,.25));
+
+    transition:.3s;
+}
+
+.logo-box img:hover{
+    transform:scale(1.05);
+    filter:
+        drop-shadow(0 0 10px rgba(0,234,255,.9))
+        drop-shadow(0 0 35px rgba(0,234,255,.5));
+}
+
+
+/* =========================================================
+   CLOCK
+========================================================= */
+
+#live-time{
+    padding:10px 18px;
+
+    color:#fff;
+
+    font-family:"Orbitron",sans-serif;
+    font-size:11px;
+    letter-spacing:1px;
+
+    background:rgba(0,0,0,.55);
+
+    border:1px solid rgba(0,234,255,.25);
+    border-radius:10px;
+
+    box-shadow:
+        inset 0 0 15px rgba(0,234,255,.04),
+        0 0 15px rgba(0,234,255,.05);
+
+    text-shadow:
+        0 0 8px rgba(0,234,255,.6);
+}
+
+
+/* =========================================================
+   TICKER
+========================================================= */
+
+.ticker{
+    position:relative;
+    margin-top:18px;
+
+    padding:11px 15px;
+
+    border-radius:10px;
+
+    overflow:hidden;
+    white-space:nowrap;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,234,255,.08),
+            rgba(0,0,0,.6),
+            rgba(0,150,255,.06)
+        );
+
+    border:1px solid rgba(0,234,255,.18);
+
+    box-shadow:
+        inset 0 0 20px rgba(0,234,255,.03),
+        0 0 15px rgba(0,234,255,.04);
+}
+
+.ticker::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-100px;
+
+    width:80px;
+    height:100%;
+
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(0,234,255,.7),
+        transparent
+    );
+
+    filter:blur(4px);
+
+    animation:tickerLight 4s linear infinite;
+}
+
+@keyframes tickerLight{
+    from{
+        left:-100px;
+    }
+    to{
+        left:110%;
+    }
+}
+
+.ticker span{
+    display:inline-block;
+
+    padding-left:100%;
+
+    font-size:14px;
+    letter-spacing:1px;
+
+    color:#dffcff;
+
+    text-shadow:
+        0 0 8px rgba(0,234,255,.4);
+
+    animation:scroll 28s linear infinite;
+}
+
+@keyframes scroll{
+    0%{
+        transform:translateX(0);
+    }
+    100%{
+        transform:translateX(-100%);
+    }
+}
+
+
+/* =========================================================
+   TOP MENU
+========================================================= */
+
+.menu-container{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+
+    gap:10px;
+
+    margin-top:45px;
+    padding:10px 0 5px;
+}
+
+.btn-wrapper{
+    position:relative;
+}
+
+
+/* =========================================================
+   MENU BUTTON
+========================================================= */
+
+.btn-menu{
+    position:relative;
+
+    min-width:115px;
+
+    padding:13px 18px;
+
+    border-radius:10px;
+
+    border:1px solid rgba(255,255,255,.12);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(19,25,29,.92),
+            rgba(4,7,9,.95)
+        );
+
+    color:#dfe8ed;
+
+    font-family:"Barlow Condensed","Compacta BT","Arial Narrow",sans-serif;
+    font-size:15px;
+    font-weight:900;
+
+    letter-spacing:1.2px;
+
+    text-decoration:none;
+
+    display:inline-block;
+    text-align:center;
+
+    transition:
+        transform .25s ease,
+        background .25s ease,
+        border .25s ease,
+        box-shadow .25s ease,
+        color .25s ease;
+
+    overflow:hidden;
+}
+
+.btn-menu::before{
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:-130%;
+
+    width:80%;
+    height:100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.15),
+            rgba(0,234,255,.25),
+            transparent
+        );
+
+    transform:skewX(-25deg);
+
+    transition:.5s;
+}
+
+.btn-menu:hover::before{
+    left:140%;
+}
+
+.btn-menu:hover,
+.btn-menu.active{
+    color:#fff;
+
+    transform:
+        translateY(-4px)
+        scale(1.035);
+
+    border-color:rgba(0,234,255,.75);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,234,255,.22),
+            rgba(0,75,110,.38),
+            rgba(0,0,0,.9)
+        );
+
+    box-shadow:
+        0 0 10px rgba(0,234,255,.45),
+        0 0 28px rgba(0,234,255,.22),
+        inset 0 0 15px rgba(0,234,255,.08);
+
+    text-shadow:
+        0 0 8px rgba(0,234,255,.8);
+}
+
+
+/* =========================================================
+   ACTIVE BUTTON
+========================================================= */
+
+.btn-menu.active::after{
+    content:"";
+
+    position:absolute;
+
+    left:15%;
+    right:15%;
+    bottom:0;
+
+    height:2px;
+
+    background:#00eaff;
+
+    box-shadow:
+        0 0 6px #00eaff,
+        0 0 15px #00eaff,
+        0 0 25px rgba(0,234,255,.8);
+
+    animation:activeLine 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes activeLine{
+    from{
+        opacity:.4;
+        transform:scaleX(.7);
+    }
+    to{
+        opacity:1;
+        transform:scaleX(1);
+    }
+}
+
+
+/* =========================================================
+   REFRESH
+========================================================= */
+
+.btn-refresh{
+    color:#fff;
+
+    border-color:rgba(0,234,255,.35);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,234,255,.15),
+            rgba(0,0,0,.7)
+        );
+}
+
+.btn-refresh:hover{
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,234,255,.45),
+            rgba(0,100,150,.4)
+        );
+}
+
+
+/* =========================================================
+   EXTERNAL MENU
+========================================================= */
+
+.btn-external{
+    border-style:solid;
+    border-color:rgba(150,180,190,.18);
+}
+
+.btn-external:hover{
+    border-color:rgba(0,234,255,.65);
+}
+
+
+/* =========================================================
+   HOVER LOGO
+========================================================= */
+
+.hover-logo{
+    position:absolute;
+
+    top:-52px;
+    left:50%;
+
+    transform:
+        translateX(-50%)
+        translateY(12px);
+
+    height:40px;
+    width:auto;
+
+    opacity:0;
+    visibility:hidden;
+
+    pointer-events:none;
+
+    transition:.25s;
+
+    filter:
+        drop-shadow(0 0 8px rgba(0,234,255,.7))
+        drop-shadow(0 0 18px rgba(0,234,255,.4));
+}
+
+.btn-wrapper:hover .hover-logo{
+    opacity:1;
+    visibility:visible;
+
+    transform:
+        translateX(-50%)
+        translateY(0);
+}
+
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+.divider{
+    position:relative;
+
+    height:1px;
+
+    margin:24px 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(0,234,255,.8),
+            #fff,
+            rgba(0,234,255,.8),
+            transparent
+        );
+
+    box-shadow:
+        0 0 8px rgba(0,234,255,.65),
+        0 0 18px rgba(0,234,255,.25);
+
+    overflow:hidden;
+}
+
+.divider::after{
+    content:"";
+
+    position:absolute;
+
+    top:-2px;
+    left:-100px;
+
+    width:100px;
+    height:5px;
+
+    background:#fff;
+
+    filter:blur(4px);
+
+    box-shadow:
+        0 0 12px #00eaff,
+        0 0 25px #00eaff;
+
+    animation:dividerRun 3s linear infinite;
+}
+
+@keyframes dividerRun{
+    from{
+        left:-100px;
+    }
+    to{
+        left:110%;
+    }
+}
+
+
+/* =========================================================
+   TAB
+========================================================= */
+
+.tab-content{
+    display:none;
+    width:100%;
+
+    animation:tabIn .35s ease;
+}
+
+.tab-content.active-view{
+    display:block;
+}
+
+@keyframes tabIn{
+    from{
+        opacity:0;
+        transform:translateY(8px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+
+/* =========================================================
+   HEADINGS
+========================================================= */
+
+h2{
+    margin:10px 0 16px;
+
+    padding:10px 14px;
+
+    font-size:22px;
+    font-weight:900;
+
+    letter-spacing:1px;
+
+    border-left:4px solid #00eaff;
+
+    color:#fff;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,234,255,.10),
+            transparent
+        );
+
+    text-shadow:
+        0 0 10px rgba(0,234,255,.35);
+}
+
+
+/* =========================================================
+   TEXTAREA
+========================================================= */
+
+textarea{
+    width:100%;
+    height:160px;
+
+    margin-top:8px;
+    padding:15px;
+
+    resize:vertical;
+
+    outline:none;
+
+    color:#eafcff;
+
+    font-family:"Barlow Condensed","Compacta BT",monospace;
+    font-size:15px;
+    font-weight:700;
+    letter-spacing:.4px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(0,234,255,.04),
+            rgba(0,0,0,.72)
+        );
+
+    border:1px solid rgba(0,234,255,.2);
+
+    border-radius:12px;
+
+    box-shadow:
+        inset 0 0 25px rgba(0,0,0,.7),
+        0 0 12px rgba(0,234,255,.03);
+
+    transition:.25s;
+}
+
+textarea:focus{
+    border-color:rgba(0,234,255,.65);
+
+    box-shadow:
+        0 0 12px rgba(0,234,255,.18),
+        0 0 30px rgba(0,234,255,.06),
+        inset 0 0 25px rgba(0,234,255,.04);
+}
+
+textarea::placeholder{
+    color:#66747c;
+}
+
+
+/* =========================================================
+   FILE INPUT
+========================================================= */
+
+input[type="file"]{
+    width:100%;
+
+    padding:12px;
+
+    margin-bottom:10px;
+
+    color:#dce8ed;
+
+    font-family:"Barlow Condensed","Compacta BT",sans-serif;
+    font-weight:700;
+
+    background:rgba(0,0,0,.5);
+
+    border:1px dashed rgba(0,234,255,.3);
+
+    border-radius:10px;
+}
+
+
+/* =========================================================
+   ACTION BUTTON
+========================================================= */
+
+.action-btn{
+    padding:11px 22px;
+
+    margin-top:12px;
+    margin-right:6px;
+
+    border-radius:9px;
+
+    border:1px solid rgba(0,234,255,.28);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,234,255,.12),
+            rgba(0,0,0,.75)
+        );
+
+    color:#fff;
+
+    font-family:"Barlow Condensed","Compacta BT","Arial Narrow",sans-serif;
+    font-size:15px;
+    font-weight:900;
+
+    letter-spacing:.8px;
+
+    transition:.25s;
+}
+
+.action-btn:hover{
+    transform:translateY(-3px);
+
+    border-color:#00eaff;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,234,255,.38),
+            rgba(0,70,100,.45)
+        );
+
+    box-shadow:
+        0 0 10px rgba(0,234,255,.4),
+        0 0 25px rgba(0,234,255,.15);
+
+    text-shadow:
+        0 0 8px #00eaff;
+}
+
+
+/* =========================================================
+   CLEAR
+========================================================= */
+
+.clear-btn{
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,30,80,.13),
+            rgba(0,0,0,.75)
+        );
+
+    border-color:rgba(255,50,90,.35);
+}
+
+.clear-btn:hover{
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,40,85,.45),
+            rgba(110,0,25,.45)
+        );
+
+    border-color:#ff335f;
+
+    box-shadow:
+        0 0 12px rgba(255,50,90,.45),
+        0 0 25px rgba(255,50,90,.18);
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.table-wrapper{
+    width:100%;
+
+    margin-top:20px;
+
+    overflow-x:auto;
+
+    border-radius:12px;
+
+    box-shadow:
+        0 0 20px rgba(0,0,0,.45);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+
+    overflow:hidden;
+}
+
+th,
+td{
+    padding:11px 10px;
+
+    border:1px solid rgba(255,255,255,.07);
+
+    text-align:center;
+
+    font-family:"Barlow Condensed","Compacta BT","Arial Narrow",sans-serif;
+
+    font-size:14px;
+    font-weight:800;
+
+    white-space:nowrap;
+}
+
+th{
+    color:#e8fdff;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,234,255,.18),
+            rgba(0,40,60,.65)
+        );
+
+    text-shadow:
+        0 0 8px rgba(0,234,255,.35);
+}
+
+td{
+    color:#d8e1e5;
+
+    background:
+        rgba(2,8,11,.72);
+}
+
+tbody tr{
+    transition:.2s;
+}
+
+tbody tr:hover td{
+    background:
+        rgba(0,234,255,.07);
+
+    box-shadow:
+        inset 0 0 12px rgba(0,234,255,.04);
+}
+
+tr.total-row td{
+    background:
+        rgba(0,150,190,.18);
+
+    color:#fff;
+
+    text-shadow:
+        0 0 7px rgba(0,234,255,.45);
+}
+
+td.blue{
+    color:#5eefff;
+    font-weight:900;
+
+    text-shadow:
+        0 0 7px rgba(0,234,255,.45);
+}
+
+td.red{
+    color:#ff5278;
+    font-weight:900;
+
+    text-shadow:
+        0 0 7px rgba(255,50,90,.35);
+}
+
+
+/* =========================================================
+   GRID / CARDS
+========================================================= */
+
+.grid{
+    display:grid;
+
+    gap:12px;
+
+    margin-top:10px;
+}
+
+.grid.dp{
+    grid-template-columns:repeat(3,1fr);
+}
+
+.grid.wd{
+    grid-template-columns:repeat(2,1fr);
+}
+
+.card{
+    position:relative;
+
+    padding:16px;
+
+    text-align:center;
+
+    border-radius:12px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(0,234,255,.07),
+            rgba(0,0,0,.65)
+        );
+
+    border:1px solid rgba(0,234,255,.17);
+
+    box-shadow:
+        inset 0 0 20px rgba(0,0,0,.45);
+
+    overflow:hidden;
+}
+
+.card::before{
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:-100%;
+
+    width:100%;
+    height:1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #00eaff,
+            transparent
+        );
+
+    animation:cardLine 4s linear infinite;
+}
+
+@keyframes cardLine{
+    0%{left:-100%}
+    100%{left:100%}
+}
+
+.value{
+    margin-top:7px;
+
+    color:#fff;
+
+    font-family:"Orbitron",sans-serif;
+
+    font-size:23px;
+    font-weight:900;
+
+    text-shadow:
+        0 0 8px rgba(0,234,255,.6),
+        0 0 20px rgba(0,234,255,.2);
+}
+
+.total{
+    margin-top:12px;
+
+    padding:13px;
+
+    border-left:4px solid #00eaff;
+
+    border-radius:9px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,234,255,.12),
+            rgba(0,0,0,.5)
+        );
+
+    font-size:16px;
+}
+
+.total.wd{
+    border-left-color:#176cff;
+}
+
+
+/* =========================================================
+   HR
+========================================================= */
+
+hr{
+    border:none;
+
+    height:1px;
+
+    margin:28px 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(0,234,255,.4),
+            transparent
+        );
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+.empty-placeholder{
+    min-height:330px;
+
+    display:flex;
+    flex-direction:column;
+
+    align-items:center;
+    justify-content:center;
+
+    text-align:center;
+
+    color:#aab7bd;
+
+    font-size:17px;
+    letter-spacing:.7px;
+
+    gap:18px;
+}
+
+.empty-placeholder > div:first-child{
+    padding:20px 25px;
+
+    color:#fff;
+
+    border:1px solid rgba(0,234,255,.18);
+
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,234,255,.07),
+            rgba(0,0,0,.55)
+        );
+
+    box-shadow:
+        0 0 25px rgba(0,234,255,.05);
+
+    text-shadow:
+        0 0 8px rgba(0,234,255,.3);
+}
+
+
+/* =========================================================
+   QUICK LINKS
+========================================================= */
+
+.dashboard-links{
+    display:flex;
+
+    justify-content:center;
+    flex-wrap:wrap;
+
+    gap:10px;
+
+    margin-top:5px;
+}
+
+.dash-link{
+    padding:10px 18px;
+
+    color:#c9faff;
+
+    text-decoration:none;
+
+    border:1px dashed rgba(0,234,255,.35);
+
+    border-radius:8px;
+
+    background:rgba(0,234,255,.05);
+
+    font-size:14px;
+    font-weight:900;
+
+    transition:.25s;
+}
+
+.dash-link:hover{
+    color:#fff;
+
+    border-style:solid;
+    border-color:#00eaff;
+
+    background:rgba(0,234,255,.18);
+
+    transform:translateY(-3px);
+
+    box-shadow:
+        0 0 12px rgba(0,234,255,.3),
+        0 0 25px rgba(0,234,255,.1);
+}
+
+
+/* =========================================================
+   KPI COPY
+========================================================= */
+
+.copy-btn-kpi{
+    padding:6px 13px;
+
+    color:#dfffff;
+
+    background:rgba(0,234,255,.08);
+
+    border:1px solid rgba(0,234,255,.28);
+
+    border-radius:6px;
+
+    font-family:"Barlow Condensed","Compacta BT",sans-serif;
+
+    font-size:12px;
+    font-weight:900;
+
+    transition:.2s;
+}
+
+.copy-btn-kpi:hover{
+    color:#fff;
+
+    background:#00a8c0;
+
+    border-color:#00eaff;
+
+    box-shadow:
+        0 0 10px rgba(0,234,255,.5);
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar{
+    width:8px;
+    height:8px;
+}
+
+::-webkit-scrollbar-track{
+    background:#020405;
+}
+
+::-webkit-scrollbar-thumb{
+    background:
+        linear-gradient(
+            #00eaff,
+            #006bff
+        );
+
+    border-radius:20px;
+
+    box-shadow:
+        0 0 8px rgba(0,234,255,.5);
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background:#fff;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1100px){
+
+    body{
+        padding:15px;
+    }
+
+    .glass-panel{
+        padding:18px;
+    }
+
+    .btn-menu{
+        min-width:105px;
+        padding:12px 14px;
+    }
+}
+
+@media(max-width:700px){
+
+    .top-row{
+        flex-direction:column;
+    }
+
+    .menu-container{
+        gap:7px;
+        margin-top:35px;
+    }
+
+    .btn-menu{
+        min-width:95px;
+        padding:10px 12px;
+        font-size:13px;
+    }
+
+    .grid.dp{
+        grid-template-columns:1fr;
+    }
+
+    .grid.wd{
+        grid-template-columns:1fr;
+    }
+
+    #live-time{
+        font-size:9px;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+<!-- PARTICLES -->
+<div class="stars">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
+
+
+<!-- =========================================================
+     MAIN PANEL
+========================================================= -->
+
+<div class="glass-panel">
+
+    <!-- VIDEO BACKGROUND -->
+    <video autoplay loop muted playsinline class="bg-video-panel">
+        <source src="video_616eeacb5c57.mp4" type="video/mp4">
+    </video>
+
+
+    <!-- HEADER -->
+
+    <div class="top-row">
+
+        <div class="logo-box">
+
+            <img
+                src="op.png"
+                alt="Logo"
+                onerror="this.src='https://via.placeholder.com/120x42/05080a/00eaff?text=OPERATIONAL'"
+            >
+
+        </div>
+
+        <div id="live-time">
+            Loading...
+        </div>
+
+    </div>
+
+
+    <!-- TICKER -->
+
+    <div class="ticker">
+
+        <span>
+            TERUSLAH BERGERAK • TETAP FOKUS • KERJAKAN DENGAN TELITI • OPERASIONAL SYSTEM ONLINE •
+            SEMUA MODUL SIAP DIGUNAKAN • PERFORMANCE MONITORING ACTIVE •
+        </span>
+
+    </div>
+
+
+    <!-- =====================================================
+         MENU ATAS
+    ====================================================== -->
+
+    <div class="menu-container">
+
+        <!-- REFRESH -->
+
+        <div class="btn-wrapper">
+
+            <img src="op.png"
+                 class="hover-logo"
+                 alt="Logo">
+
+            <button
+                class="btn-menu btn-refresh"
+                onclick="resetAplikasiGlobal()">
+
+                REFRESH
+
+            </button>
+
+        </div>
+
+
+        <!-- DASHBOARD -->
+
+        <div class="btn-wrapper">
+
+            <img src="op.png"
+                 class="hover-logo"
+                 alt="Logo">
+
+            <button
+                class="btn-menu active"
+                id="nav-dashboard"
+                onclick="switchTab('dashboard')">
+
+                DASHBOARD
+
+            </button>
+
+        </div>
+
+
+        <!-- VALIDASI -->
+
+        <div class="btn-wrapper">
+
+            <img src="op.png"
+                 class="hover-logo"
+                 alt="Logo">
+
+            <button
+                class="btn-menu"
+                id="nav-validasi"
+                onclick="switchTab('validasi')">
+
+                VALIDASI
+
+            </button>
+
+        </div>
+
+
+        <!-- PGSOFT -->
+
+        <div class="btn-wrapper">
+
+            <img src="op.png"
+                 class="hover-logo"
+                 alt="Logo">
+
+            <button
+                class="btn-menu"
+                id="nav-pgsoft"
+                onclick="switchTab('pgsoft')">
+
+                PGSOFT
+
+            </button>
+
+        </div>
+
+
+        <!-- REKAPAN -->
+
+        <div class="btn-wrapper">
+
+            <img src="op.png"
+                 class="hover-logo"
+                 alt="Logo">
+
+            <button
+                class="btn-menu"
+                id="nav-rekapan"
+                onclick="switchTab('rekapan')">
+
+                REKAPAN
+
+            </button>
+
+        </div>
+
+
+        <!-- STRUK -->
+
+        <div class="btn-wrapper">
+
+            <img src="op.png"
+                 class="hover-logo"
+                 alt="Logo">
+
+            <a
+                href="gabungan.html"
+                class="btn-menu btn-external">
+
+                STRUK ↗
+
+            </a>
+
+        </div>
+
+
+        <!-- KPI -->
+
+        <div class="btn-wrapper">
+
+            <img src="op.png"
+                 class="hover-logo"
+                 alt="Logo">
+
+            <button
+                class="btn-menu"
+                id="nav-kpi"
+                onclick="switchTab('kpi')">
+
+                KPI UPLOAD
+
+            </button>
+
+        </div>
+
+
+        <!-- TTM5D -->
+
+        <div class="btn-wrapper">
+
+            <img src="op.png"
+                 class="hover-logo"
+                 alt="Logo">
+
+            <a
+                href="TTM5D.html"
+                class="btn-menu btn-external">
+
+                TTM5D ↗
+
+            </a>
+
+        </div>
+
+
+        <!-- IMGBB -->
+
+        <div class="btn-wrapper">
+
+            <img src="op.png"
+                 class="hover-logo"
+                 alt="Logo">
+
+            <a
+                href="https://imgbb.com/"
+                target="_blank"
+                class="btn-menu btn-external">
+
+                IMGBB ↗
+
+            </a>
+
+        </div>
+
+
+        <!-- IMGUR -->
+
+        <div class="btn-wrapper">
+
+            <img src="op.png"
+                 class="hover-logo"
+                 alt="Logo">
+
+            <a
+                href="https://imgur.com/"
+                target="_blank"
+                class="btn-menu btn-external">
+
+                IMGUR ↗
+
+            </a>
+
+        </div>
+
+
+        <!-- CEK NAWALA -->
+
+        <div class="btn-wrapper">
+
+            <img src="op.png"
+                 class="hover-logo"
+                 alt="Logo">
+
+            <a
+                href="https://trustpos.checkipos.com/"
+                target="_blank"
+                class="btn-menu btn-external">
+
+                CEK NAWALA ↗
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- DIVIDER -->
+
+    <div class="divider"></div>
+
+
+    <!-- =====================================================
+         DASHBOARD
+    ====================================================== -->
+
+    <div
+        id="view-dashboard"
+        class="tab-content active-view">
+
+        <div class="empty-placeholder">
+
+            <div>
+                SILAKAN PILIH SALAH SATU MENU DI ATAS UNTUK MEMULAI PROSES DATA
+            </div>
+
+            <div>
+                JALAN PINTAS AKSES CEPAT
+            </div>
+
+            <div class="dashboard-links">
+
+                <a
+                    href="struk.html"
+                    class="dash-link">
+
+                    BUKA STRUK
+
+                </a>
+
+                <a
+                    href="ttm5d.html"
+                    class="dash-link">
+
+                    BUKA TTM5D
+
+                </a>
+
+                <a
+                    href="https://imgbb.com/"
+                    target="_blank"
+                    class="dash-link">
+
+                    IMGBB
+
+                </a>
+
+                <a
+                    href="https://imgur.com/"
+                    target="_blank"
+                    class="dash-link">
+
+                    IMGUR
+
+                </a>
+
+                <a
+                    href="https://trustpos.checkipos.com/"
+                    target="_blank"
+                    class="dash-link">
+
+                    CEK NAWALA
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         VALIDASI
+    ====================================================== -->
+
+    <div
+        id="view-validasi"
+        class="tab-content">
+
+        <h2>
+            VALIDASI JUMLAH REKENING
+        </h2>
+
+        <textarea
+            id="inputData"
+            placeholder="PASTE DATA LENGKAP DI SINI..."></textarea>
+
+        <div>
+
+            <button
+                class="action-btn"
+                onclick="prosesData()">
+
+                PROSES DATA
+
+            </button>
+
+            <button
+                class="action-btn"
+                onclick="copyHasil()">
+
+                COPY HASIL
+
+            </button>
+
+            <button
+                class="action-btn clear-btn"
+                onclick="resetDataValidasi()">
+
+                CLEAR
+
+            </button>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr id="bankHeader"></tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr id="bankData"></tr>
+
+                    <tr
+                        id="totalRow"
+                        class="total-row"></tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         PGSOFT
+    ====================================================== -->
+
+    <div
+        id="view-pgsoft"
+        class="tab-content">
+
+        <h2>
+            RINGKASAN TRANSAKSI USER PGSOFT
+        </h2>
+
+        <textarea
+            id="dataInputPG"
+            placeholder="PASTE SELURUH DATA TRANSAKSI DI SINI..."></textarea>
+
+        <div>
+
+            <button
+                class="action-btn"
+                onclick="prosesRingkasanPG()">
+
+                TAMPILKAN RINGKASAN
+
+            </button>
+
+            <button
+                class="action-btn"
+                onclick="copyHasilPGSoft()">
+
+                COPY HASIL
+
+            </button>
+
+            <button
+                class="action-btn clear-btn"
+                onclick="resetPGSoft()">
+
+                CLEAR
+
+            </button>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>USER ID</th>
+                        <th>NAMA REKENING</th>
+                        <th>NOMOR REKENING</th>
+                        <th>PERMAINAN</th>
+                        <th>PERIODE</th>
+                        <th>TOTAL WIN</th>
+                        <th>TARUHAN</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="hasilBodyPG"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         REKAPAN
+    ====================================================== -->
+
+    <div
+        id="view-rekapan"
+        class="tab-content">
+
+        <h2>
+            📋 REKAPAN WL & TO
+        </h2>
+
+        <textarea
+            id="rekapanInput"
+            placeholder="PASTE DATA REKAPAN DI SINI..."></textarea>
+
+        <div>
+
+            <button
+                class="action-btn"
+                onclick="convertRekapan()">
+
+                CONVERT
+
+            </button>
+
+            <button
+                class="action-btn"
+                onclick="copyRekapan()">
+
+                COPY
+
+            </button>
+
+            <button
+                class="action-btn clear-btn"
+                onclick="document.getElementById('rekapanInput').value='';document.getElementById('rekapanOutput').innerHTML='';">
+
+                CLEAR
+
+            </button>
+
+        </div>
+
+
+        <div
+            id="rekapanOutput"
+            class="table-wrapper">
+        </div>
+
+
+        <hr>
+
+
+        <h2>
+            💰 CSV FORM DP & WD
+        </h2>
+
+
+        <input
+            type="file"
+            id="csvFile">
+
+
+        <div>
+
+            <button
+                class="action-btn"
+                id="processBtnCSV">
+
+                PROCESS CSV
+
+            </button>
+
+        </div>
+
+
+        <div
+            id="resultBoxCSV"
+            style="display:none;margin-top:20px;">
+
+            <h2>
+                DEPOSIT
+            </h2>
+
+
+            <div class="grid dp">
+
+                <div class="card">
+
+                    FORM DP
+
+                    <div
+                        class="value"
+                        id="formDP">
+
+                        0
+
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    GARUDA DP
+
+                    <div
+                        class="value"
+                        id="formDPGaruda">
+
+                        0
+
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    QRIS DP
+
+                    <div
+                        class="value"
+                        id="formDPQris">
+
+                        0
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="total">
+
+                TOTAL DP :
+                <span id="totalDP">0</span>
+
+            </div>
+
+
+            <h2 style="margin-top:25px;">
+
+                WITHDRAW
+
+            </h2>
+
+
+            <div class="grid wd">
+
+                <div class="card">
+
+                    WD
+
+                    <div
+                        class="value"
+                        id="formWD">
+
+                        0
+
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    AUTO WD
+
+                    <div
+                        class="value"
+                        id="formAutoWD">
+
+                        0
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="total wd">
+
+                TOTAL WD :
+                <span id="totalWD">0</span>
+
+            </div>
+
+
+            <div style="margin-top:15px;">
+
+                <button
+                    class="action-btn"
+                    onclick="copyDP()">
+
+                    COPY DP
+
+                </button>
+
+                <button
+                    class="action-btn"
+                    onclick="copyWD()">
+
+                    COPY WD
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         KPI
+    ====================================================== -->
+
+    <div
+        id="view-kpi"
+        class="tab-content">
+
+        <h2>
+            📈 KPI UPLOAD — CSV PROCESSOR
+        </h2>
+
+
+        <input
+            type="file"
+            id="kpiCsvFile"
+            accept=".csv">
+
+
+        <div>
+
+            <button
+                class="action-btn clear-btn"
+                onclick="resetKpiUpload()">
+
+                CLEAR KPI
+
+            </button>
+
+        </div>
+
+
+        <div
+            class="table-wrapper"
+            id="kpiTable">
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+/* =========================================================
+   CLOCK
+========================================================= */
+
+function updateClock(){
+
+    const now=new Date();
+
+    const hari=[
+        "Minggu",
+        "Senin",
+        "Selasa",
+        "Rabu",
+        "Kamis",
+        "Jumat",
+        "Sabtu"
+    ];
+
+    const bulan=[
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "Mei",
+        "Jun",
+        "Jul",
+        "Agu",
+        "Sep",
+        "Okt",
+        "Nov",
+        "Des"
+    ];
+
+    document.getElementById("live-time").innerText =
+        hari[now.getDay()]
+        +", "
+        +now.getDate()
+        +" "
+        +bulan[now.getMonth()]
+        +" "
+        +now.getFullYear()
+        +" - "
+        +String(now.getHours()).padStart(2,'0')
+        +":"
+        +String(now.getMinutes()).padStart(2,'0')
+        +":"
+        +String(now.getSeconds()).padStart(2,'0');
+
+}
+
+setInterval(updateClock,1000);
+
+updateClock();
+
+
+/* =========================================================
+   TAB NAVIGATION
+========================================================= */
+
+function switchTab(targetView){
+
+    document
+        .querySelectorAll('.tab-content')
+        .forEach(view=>{
+            view.classList.remove('active-view');
+        });
+
+    document
+        .querySelectorAll('.btn-menu')
+        .forEach(btn=>{
+            btn.classList.remove('active');
+        });
+
+
+    const target=document.getElementById(
+        'view-'+targetView
+    );
+
+    if(target){
+        target.classList.add('active-view');
+    }
+
+
+    const navBtn=document.getElementById(
+        'nav-'+targetView
+    );
+
+    if(navBtn){
+        navBtn.classList.add('active');
+    }
+
+}
+
+
+/* =========================================================
+   GLOBAL RESET
+========================================================= */
+
+function resetAplikasiGlobal(){
+
+    resetDataValidasi();
+
+    resetPGSoft();
+
+    document.getElementById(
+        'rekapanInput'
+    ).value='';
+
+    document.getElementById(
+        'rekapanOutput'
+    ).innerHTML='';
+
+    document.getElementById(
+        'csvFile'
+    ).value='';
+
+    csvContent="";
+
+    document.getElementById(
+        'resultBoxCSV'
+    ).style.display='none';
+
+    resetKpiUpload();
+
+    switchTab('dashboard');
+
+    alert(
+        "SELURUH DATA FORM BERHASIL DI-REFRESH!"
+    );
+
+}
+
+
+/* =========================================================
+   VALIDASI ENGINE
+========================================================= */
+
+const banks=[
+    "JAGO",
+    "BCA",
+    "BNI",
+    "BRI",
+    "MDR",
+    "DANAMON",
+    "CIMB",
+    "BSI",
+    "OVO",
+    "GOPAY",
+    "MAYBANK",
+    "MEGA",
+    "OCBC",
+    "PANIN",
+    "PERMATA",
+    "SINARMAS",
+    "ALLOBANK",
+    "DANA",
+    "LINKAJA",
+    "SEABANK"
+];
+
+let bankCount={};
+
+
+function initTableValidasi(){
+
+    const header=document.getElementById(
+        "bankHeader"
+    );
+
+    header.innerHTML="";
+
+    banks.forEach(b=>{
+
+        bankCount[b]=0;
+
+        let th=document.createElement("th");
+
+        th.textContent=b;
+
+        header.appendChild(th);
+
+    });
+
+    renderTableValidasi();
+
+}
+
+
+function renderTableValidasi(){
+
+    const dataRow=document.getElementById(
+        "bankData"
+    );
+
+    const totalRow=document.getElementById(
+        "totalRow"
+    );
+
+    dataRow.innerHTML="";
+
+    totalRow.innerHTML="";
+
+    let total=0;
+
+
+    banks.forEach(b=>{
+
+        let td=document.createElement("td");
+
+        td.textContent=bankCount[b];
+
+        dataRow.appendChild(td);
+
+        total+=bankCount[b];
+
+    });
+
+
+    banks.forEach((b,i)=>{
+
+        let td=document.createElement("td");
+
+        td.textContent=
+            i===banks.length-1
+            ?total
+            :"";
+
+        totalRow.appendChild(td);
+
+    });
+
+}
+
+
+function normalisasiBank(nama){
+
+    nama=nama
+        .toUpperCase()
+        .trim();
+
+    if(nama.includes("BANKJAGO"))
+        return "JAGO";
+
+    if(nama.includes("MANDIRI"))
+        return "MDR";
+
+    return nama;
+
+}
+
+
+function prosesData(){
+
+    banks.forEach(
+        b=>bankCount[b]=0
+    );
+
+    const raw=document
+        .getElementById("inputData")
+        .value
+        .split("\n");
+
+
+    raw.forEach(line=>{
+
+        const match=line.match(
+            /([A-Z]+)[^A-Z0-9]*,/i
+        );
+
+        if(match){
+
+            let bankName=
+                normalisasiBank(match[1]);
+
+            if(
+                banks.includes(bankName)
+            ){
+
+                bankCount[bankName]++;
+
+            }
+
+        }
+
+    });
+
+    renderTableValidasi();
+
+}
+
+
+function copyHasil(){
+
+    let hasil=banks
+        .map(b=>bankCount[b])
+        .join("\t");
+
+    navigator.clipboard
+        .writeText(hasil)
+        .then(()=>{
+            alert(
+                "HASIL VALIDASI BERHASIL DI-COPY!"
+            );
+        });
+
+}
+
+
+function resetDataValidasi(){
+
+    document.getElementById(
+        "inputData"
+    ).value="";
+
+    banks.forEach(
+        b=>bankCount[b]=0
+    );
+
+    renderTableValidasi();
+
+}
+
+initTableValidasi();
+
+
+/* =========================================================
+   PGSOFT ENGINE
+========================================================= */
+
+function prosesRingkasanPG(){
+
+    const raw=document
+        .getElementById('dataInputPG')
+        .value;
+
+    const lines=raw
+        .split('\n')
+        .map(l=>l.trim())
+        .filter(l=>l!='');
+
+
+    let userId='';
+    let permainan='';
+    let periode='';
+    let totalWin=0;
+    let taruhan=0;
+
+
+    if(lines.length>0){
+        permainan=lines[0];
+    }
+
+
+    for(
+        let i=0;
+        i<lines.length;
+        i++
+    ){
+
+        const line=lines[i];
+
+
+        if(
+            !userId &&
+            i>0 &&
+            lines[i-1].startsWith('Ext. ID')
+        ){
+
+            userId=line;
+
+        }
+
+
+        if(
+            line.startsWith('Ext. ID')
+        ){
+
+            const match=line.match(
+                /(\d{16,19})/
+            );
+
+            if(match)
+                periode=match[1];
+
+        }
+
+
+        if(
+            line.toLowerCase()==='credit' &&
+            i+1<lines.length
+        ){
+
+            const match=
+                lines[i+1].match(
+                    /IDR\s*([\d,]+)/
+                );
+
+            if(match){
+
+                totalWin+=parseInt(
+                    match[1].replace(/,/g,'')
+                );
+
+            }
+
+        }
+
+
+        if(
+            line.toLowerCase()==='debit' &&
+            i+1<lines.length
+        ){
+
+            const match=
+                lines[i+1].match(
+                    /IDR\s*([\d,]+)/
+                );
+
+            if(match){
+
+                taruhan=parseInt(
+                    match[1].replace(/,/g,'')
+                );
+
+            }
+
+        }
+
+    }
+
+
+    document.getElementById(
+        'hasilBodyPG'
+    ).innerHTML=`
+
+        <tr>
+
+            <td>${userId||'-'}</td>
+
+            <td>-</td>
+
+            <td>-</td>
+
+            <td>${permainan||'-'}</td>
+
+            <td>${periode||'-'}</td>
+
+            <td>
+                ${totalWin.toLocaleString('id-ID')}
+            </td>
+
+            <td>
+                ${taruhan.toLocaleString('id-ID')}
+            </td>
+
+        </tr>
+
+    `;
+
+}
+
+
+function copyHasilPGSoft(){
+
+    const tbody=
+        document.getElementById(
+            'hasilBodyPG'
+        );
+
+
+    if(
+        !tbody ||
+        tbody.rows.length===0 ||
+        tbody.rows[0].cells[0]
+            .textContent===''
+    ){
+
+        return alert(
+            "BELUM ADA DATA UNTUK DI-COPY!"
+        );
+
+    }
+
+
+    const row=tbody.rows[0];
+
+
+    let uID=
+        row.cells[0].textContent.trim();
+
+    let namaRek=
+        row.cells[1].textContent.trim();
+
+    let noRek=
+        row.cells[2].textContent.trim();
+
+    let game=
+        row.cells[3].textContent.trim();
+
+    let per=
+        row.cells[4].textContent.trim();
+
+    let winFormatted=
+        row.cells[5]
+        .textContent
+        .trim()
+        .replace(/\./g,',');
+
+    let betFormatted=
+        row.cells[6]
+        .textContent
+        .trim()
+        .replace(/\./g,',');
+
+
+    let dataGabungan=[
+        uID,
+        namaRek,
+        noRek,
+        game,
+        per,
+        winFormatted,
+        betFormatted
+    ];
+
+
+    navigator.clipboard
+        .writeText(
+            dataGabungan.join('\t')
+        )
+        .then(()=>{
+            alert(
+                'BERHASIL COPY FORMAT KOMA!'
+            );
+        });
+
+}
+
+
+function resetPGSoft(){
+
+    document.getElementById(
+        'dataInputPG'
+    ).value='';
+
+    document.getElementById(
+        'hasilBodyPG'
+    ).innerHTML='';
+
+}
+
+
+/* =========================================================
+   REKAPAN ENGINE
+========================================================= */
+
+function parseNumber(val){
+
+    if(!val)
+        return 0;
+
+    val=val.replace(/,/g,'');
+
+    if(val.startsWith("(")){
+
+        return -parseFloat(
+            val.replace(/[()]/g,"")
+        );
+
+    }
+
+    return parseFloat(val)||0;
+
+}
+
+
+function convertRekapan(){
+
+    const text=document
+        .getElementById(
+            "rekapanInput"
+        )
+        .value
+        .trim();
+
+
+    if(!text)
+        return alert(
+            "FORM MASUKAN KOSONG!"
+        );
+
+
+    const rows=text.split("\n");
+
+    let data={};
+
+
+    const mapProviders=[
+
+        "Streamspin Gift",
+        "Sbo Sportsbook",
+        "Saba Sportsbook",
+        "Pp98",
+        "Pragmatic Play",
+        "Live Game",
+        "Streamspin",
+        "Elottery",
+        "Arcade",
+        "Esports",
+        "Toto",
+        "poker",
+        "Slot"
+
+    ];
+
+
+    rows.forEach(r=>{
+
+        let line=r.trim();
+
+        if(!line)
+            return;
+
+
+        let matchedName="";
+        let remainder="";
+
+
+        for(
+            let p of mapProviders
+        ){
+
+            if(
+                line
+                    .toLowerCase()
+                    .startsWith(
+                        p.toLowerCase()
+                    )
+            ){
+
+                matchedName=
+                    p.toLowerCase();
+
+                remainder=
+                    line
+                    .substring(p.length)
+                    .trim();
+
+                break;
+
+            }
+
+        }
+
+
+        if(matchedName){
+
+            let tokens=
+                remainder.split(
+                    /\t+|\s+/
+                );
+
+            let to=
+                parseNumber(tokens[0]);
+
+            let wl=
+                parseNumber(tokens[2]);
+
+            data[matchedName]={
+                to,
+                wl
+            };
+
+        }
+
+    });
+
+
+    const map={
+
+        "TOGEL":"Toto",
+        "TOTOMACAU 4D":"totomacau 4d",
+        "TOTOMACAU 5D":"totomacau 5d",
+        "KINGKONG 4D":"king kong 4d",
+        "PRAGMATIC PLAY":"Pragmatic Play",
+        "E-LOTTERY":"Elottery",
+        "ARCADE":"Arcade",
+        "POKER":"poker",
+        "STREAM SPIN":"Streamspin",
+        "STREAM SPIN GIFT":"Streamspin Gift",
+        "ESPORTS":"Esports",
+        "SBO SPORTSBOOK":"Sbo Sportsbook",
+        "SABA SPORTSBOOK":"Saba Sportsbook",
+        "PP98":"pp98",
+        "TOTALAN LIVEGAMES":"Live Game"
+
+    };
+
+
+    let html="<table><tr>";
+
+
+    for(let k in map){
+
+        html+=
+            `<th colspan='2'>${k}</th>`;
+
+    }
+
+
+    html+="</tr><tr>";
+
+
+    for(let k in map){
+
+        html+=
+            "<th>TO</th><th>WL</th>";
+
+    }
+
+
+    html+="</tr><tr>";
+
+
+    for(let k in map){
+
+        let targetKey=
+            map[k].toLowerCase();
+
+        let g=data[targetKey];
+
+
+        if(!g){
+
+            html+=
+                "<td></td><td></td>";
+
+        }else{
+
+            html+=
+                `<td class='blue'>${g.to}</td>`;
+
+            html+=
+                `<td class='red'>${-g.wl}</td>`;
+
+        }
+
+    }
+
+
+    html+="</tr></table>";
+
+
+    document.getElementById(
+        "rekapanOutput"
+    ).innerHTML=html;
+
+}
+
+
+function copyRekapan(){
+
+    const cells=
+        document.querySelectorAll(
+            "#rekapanOutput td"
+        );
+
+
+    if(!cells.length){
+
+        return alert(
+            "DATA KOSONG, LAKUKAN CONVERT DULU!"
+        );
+
+    }
+
+
+    let t=[...cells]
+        .map(x=>x.innerText)
+        .join("\t");
+
+
+    navigator.clipboard
+        .writeText(t)
+        .then(()=>{
+            alert(
+                "REKAPAN BERHASIL DI-COPY!"
+            );
+        });
+
+}
+
+
+/* =========================================================
+   CSV ENGINE
+========================================================= */
+
+let csvContent="";
+
+let csvParsedData={
+    formDP:0,
+    formDPGaruda:0,
+    formDPQris:0,
+    formWD:0,
+    formAutoWD:0
+};
+
+
+document
+    .getElementById("csvFile")
+    .addEventListener(
+        "change",
+        e=>{
+
+            let file=e.target.files[0];
+
+            if(!file)
+                return;
+
+
+            let reader=
+                new FileReader();
+
+
+            reader.onload=ev=>{
+
+                csvContent=
+                    ev.target.result;
+
+            };
+
+
+            reader.readAsText(file);
+
+        }
+    );
+
+
+document
+    .getElementById("processBtnCSV")
+    .onclick=function(){
+
+        if(!csvContent){
+
+            return alert(
+                "PILIH FILE CSV TERLEBIH DAHULU!"
+            );
+
+        }
+
+
+        csvParsedData=
+            parseCSV(csvContent);
+
+
+        renderCSVUI();
+
+
+        document.getElementById(
+            "resultBoxCSV"
+        ).style.display="block";
+
+    };
+
+
+function parseCSV(csv){
+
+    let lines=
+        csv.trim()
+        .split(/\r?\n/);
+
+
+    let d={
+        formDP:0,
+        formDPGaruda:0,
+        formDPQris:0,
+        formWD:0,
+        formAutoWD:0
+    };
+
+
+    for(
+        let i=1;
+        i<lines.length;
+        i++
+    ){
+
+        let c=
+            splitCSV(lines[i]);
+
+
+        let type=
+            (c[1]||"").trim();
+
+
+        let by=
+            (c[3]||"")
+            .toLowerCase();
+
+
+        if(
+            type==="Deposit (PGA)"
+        ){
+
+            d.formDPQris++;
+
+        }
+
+        else if(
+            type==="Deposit" &&
+            (
+                by.includes("pga") ||
+                by.includes("vkiaadrift")
+            )
+        ){
+
+            d.formDPGaruda++;
+
+        }
+
+        else if(
+            type==="Deposit"
+        ){
+
+            d.formDP++;
+
+        }
+
+        else if(
+            type==="Withdraw" &&
+            by.includes("autowd")
+        ){
+
+            d.formAutoWD++;
+
+        }
+
+        else if(
+            type==="Withdraw"
+        ){
+
+            d.formWD++;
+
+        }
+
+    }
+
+
+    return d;
+
+}
+
+
+function splitCSV(line){
+
+    let res=[];
+    let cur="";
+    let q=false;
+
+
+    for(let ch of line){
+
+        if(ch=='"')
+            q=!q;
+
+        else if(
+            ch==',' &&
+            !q
+        ){
+
+            res.push(cur);
+            cur="";
+
+        }
+
+        else{
+
+            cur+=ch;
+
+        }
+
+    }
+
+
+    res.push(cur);
+
+    return res;
+
+}
+
+
+function renderCSVUI(){
+
+    let totalDP=
+        csvParsedData.formDP+
+        csvParsedData.formDPGaruda+
+        csvParsedData.formDPQris;
+
+
+    let totalWD=
+        csvParsedData.formWD+
+        csvParsedData.formAutoWD;
+
+
+    document.getElementById(
+        "formDP"
+    ).innerText=
+        csvParsedData.formDP;
+
+
+    document.getElementById(
+        "formDPGaruda"
+    ).innerText=
+        csvParsedData.formDPGaruda;
+
+
+    document.getElementById(
+        "formDPQris"
+    ).innerText=
+        csvParsedData.formDPQris;
+
+
+    document.getElementById(
+        "formWD"
+    ).innerText=
+        csvParsedData.formWD;
+
+
+    document.getElementById(
+        "formAutoWD"
+    ).innerText=
+        csvParsedData.formAutoWD;
+
+
+    document.getElementById(
+        "totalDP"
+    ).innerText=
+        totalDP;
+
+
+    document.getElementById(
+        "totalWD"
+    ).innerText=
+        totalWD;
+
+}
+
+
+function copyDP(){
+
+    navigator.clipboard
+        .writeText(
+            `${csvParsedData.formDP}\t${csvParsedData.formDPGaruda}\t${csvParsedData.formDPQris}`
+        )
+        .then(()=>{
+            alert(
+                "DATA DP BERHASIL DISALIN!"
+            );
+        });
+
+}
+
+
+function copyWD(){
+
+    navigator.clipboard
+        .writeText(
+            `${csvParsedData.formWD}\t${csvParsedData.formAutoWD}`
+        )
+        .then(()=>{
+            alert(
+                "DATA WD BERHASIL DISALIN!"
+            );
+        });
+
+}
+
+
+/* =========================================================
+   KPI ENGINE
+========================================================= */
+
+const kpiCsvInput=
+    document.getElementById(
+        "kpiCsvFile"
+    );
+
+
+const kpiTableContainer=
+    document.getElementById(
+        "kpiTable"
+    );
+
+
+kpiCsvInput.addEventListener(
+    "change",
+    function(e){
+
+        const file=e.target.files[0];
+
+        if(!file)
+            return;
+
+
+        const reader=
+            new FileReader();
+
+
+        reader.onload=function(ev){
+
+            const csv=
+                ev.target.result;
+
+
+            const rows=
+                csv
+                .trim()
+                .split("\n")
+                .map(r=>splitCSV(r));
+
+
+            let data={};
+
+
+            rows.slice(1)
+                .forEach(r=>{
+
+                    if(r.length<4)
+                        return;
+
+
+                    const info=
+                        r[1]
+                        .replace(/"/g,"")
+                        .toLowerCase();
+
+
+                    const admin=
+                        r[3]
+                        .replace(/"/g,"")
+                        .trim();
+
+
+                    if(!admin)
+                        return;
+
+
+                    if(!data[admin]){
+
+                        data[admin]={
+                            dp:0,
+                            reject:0,
+                            wd:0,
+                            bantuDP:0,
+                            bantuWD:0
+                        };
+
+                    }
+
+
+                    if(
+                        info.includes('deposit') &&
+                        !info.includes('reject')
+                    ){
+
+                        data[admin].dp++;
+
+                    }
+
+                    else if(
+                        info.includes('reject') &&
+                        info.includes('deposit')
+                    ){
+
+                        data[admin].reject++;
+
+                    }
+
+                    else if(
+                        info.includes('withdraw') &&
+                        !info.includes('reject')
+                    ){
+
+                        data[admin].wd++;
+
+                    }
+
+                });
+
+
+            renderKpiTable(data);
+
+        };
+
+
+        reader.readAsText(file);
+
+    }
+);
+
+
+function renderKpiTable(data){
+
+    let html=`
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>ADMIN</th>
+                    <th>DEPOSIT</th>
+                    <th>BANTU DP</th>
+                    <th>REJECT DP</th>
+                    <th>WITHDRAW</th>
+                    <th>BANTU WD</th>
+                    <th>ACTION</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+    `;
+
+
+    Object.keys(data)
+        .sort()
+        .forEach(admin=>{
+
+            const d=data[admin];
+
+
+            html+=`
+
+                <tr>
+
+                    <td
+                        style="
+                        font-weight:900;
+                        color:#fff;
+                        "
+                    >
+                        ${admin}
+                    </td>
+
+                    <td class="blue">
+                        ${d.dp}
+                    </td>
+
+                    <td>
+                        ${d.bantuDP}
+                    </td>
+
+                    <td class="red">
+                        ${d.reject}
+                    </td>
+
+                    <td class="blue">
+                        ${d.wd}
+                    </td>
+
+                    <td>
+                        ${d.bantuWD}
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="copy-btn-kpi"
+                            onclick="copyKpiRow(
+                                '${admin}',
+                                ${d.dp},
+                                ${d.bantuDP},
+                                ${d.reject},
+                                ${d.wd},
+                                ${d.bantuWD}
+                            )"
+                        >
+
+                            COPY ROW
+
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        });
+
+
+    html+=`
+
+            </tbody>
+
+        </table>
+
+    `;
+
+
+    kpiTableContainer.innerHTML=html;
+
+}
+
+
+window.copyKpiRow=
+function(
+    admin,
+    dp,
+    bantuDP,
+    reject,
+    wd,
+    bantuWD
+){
+
+    const text=
+        `${dp}\t${bantuDP}\t${reject}\t${wd}\t${bantuWD}`;
+
+
+    navigator.clipboard
+        .writeText(text)
+        .then(()=>{
+
+            alert(
+                "BERHASIL MENYALIN DATA KPI ADMIN: "
+                +admin
+            );
+
+        })
+        .catch(()=>{
+
+            alert(
+                "GAGAL MENYALIN DATA!"
+            );
+
+        });
+
+};
+
+
+function resetKpiUpload(){
+
+    document.getElementById(
+        "kpiCsvFile"
+    ).value="";
+
+
+    kpiTableContainer.innerHTML="";
+
+}
+
+
+/* =========================================================
+   CTRL + U REDIRECT
+========================================================= */
+
+window.addEventListener(
+    'keydown',
+    function(e){
+
+        if(
+            (e.ctrlKey || e.metaKey) &&
+            e.key.toLowerCase()==='u'
+        ){
+
+            e.preventDefault();
+
+            sessionStorage.setItem(
+                'returnFromHaha',
+                'true'
+            );
+
+            window.location.href=
+                'haha.jpg';
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
