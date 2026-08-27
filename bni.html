@@ -1,0 +1,292 @@
+
+
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>BNI Mobile PRO - Time Edit Enabled</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+        :root {
+            --bni-text-left: #424242;
+            --bni-text-right: #333333;
+            --bni-orange: #E55300;
+            --bni-teal: #005E6A;
+            --tosca-neon: #00f5ff;
+        }
+
+        body {
+            background: #0f0f0f;
+            font-family: 'Roboto', sans-serif;
+            margin: 0; padding: 20px;
+            display: flex; gap: 25px; justify-content: center; align-items: flex-start;
+        }
+
+        /* EDITOR PANEL */
+        .editor-panel {
+            width: 360px; background: #1a1a1a; padding: 20px;
+            border-radius: 15px; border: 1px solid #333;
+            display: flex; flex-direction: column; gap: 12px;
+        }
+        .input-group { display: flex; flex-direction: column; gap: 5px; }
+        .row-group { display: flex; gap: 10px; width: 100%; }
+        label { color: var(--tosca-neon); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        input {
+            background: #000; border: 1px solid #444; color: #fff;
+            padding: 10px; border-radius: 8px; font-size: 14px; outline: none;
+            width: 100%; box-sizing: border-box;
+        }
+
+        /* STRUK PREVIEW */
+        .container {
+            position: relative; 
+            width: 375px; 
+            background: white;
+            box-shadow: 0 0 40px rgba(0,0,0,0.6); 
+            overflow: hidden;
+            display: block;
+            line-height: 0;
+        }
+
+        .background { width: 100%; display: block; margin: 0; padding: 0; }
+        .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; line-height: normal; }
+
+        /* WATERMARK */
+        .watermark-container {
+            position: absolute; right: 8px; top: 130px; bottom: 80px;
+            display: flex; flex-direction: column; justify-content: space-around;
+            opacity: 0.08; pointer-events: none;
+        }
+        .wm-text { 
+            writing-mode: vertical-rl; transform: rotate(180deg);
+            font-size: 17px; font-weight: 900; color: var(--bni-teal); 
+            letter-spacing: 2px;
+        }
+
+        /* DATA STRUK */
+        .st-header { position: absolute; top: 22px; width: 100%; text-align: center; }
+        .st-info-title { font-size: 16px; color: var(--bni-text-left); margin-bottom: 35px; font-weight: 400; }
+        .st-status-msg { font-size: 19px; font-weight: 500; color: #111; }
+
+        .st-row { position: absolute; width: 100%; padding: 0 35px; box-sizing: border-box; display: flex; justify-content: space-between; }
+        .st-label { color: var(--bni-text-left); font-size: 13.5px; font-weight: 400; }
+        .st-value { color: var(--bni-text-right); text-align: right; max-width: 200px; font-weight: 390; font-size: 13.5px; }
+
+        /* Posisi Baris */
+        #row-rek { top: 125px; } #row-penerima { top: 165px; } #row-tgl { top: 205px; }
+        #row-jam { top: 245px; } #row-email { top: 285px; } #row-bank { top: 325px; } 
+        #row-pengirim { top: 365px; } #row-nom { top: 405px; } #row-fee { top: 445px; } 
+        #row-total { top: 485px; } #row-ket { top: 525px; }
+
+        .btn-group { display: flex; gap: 5px; margin-top: 10px; }
+        .btn { flex: 1; padding: 12px; border-radius: 8px; border: none; cursor: pointer; font-weight: 200; color: white; }
+
+.home-btn {
+    position: fixed;
+    left: 50%;
+    bottom: calc(22px + env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    z-index: 9999;
+    display: inline-flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 30px;
+    border-radius: 15px;
+    /* Border tipis warna emas terang */
+    border: 1px solid rgba(255, 215, 0, 0.4); 
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: .10px;
+    text-decoration: none;
+    /* Warna teks cokelat tua agar kontras dengan emas */
+    color: #4a3700; 
+    /* Gradasi Emas Mewah */
+    background: linear-gradient(100deg, #bf953f, #fcf6ba, #b38728, #fcf6ba, #aa771c);
+    background-size: 200% 100%;
+    animation: slideX 3.2s ease-in-out infinite alternate;
+    /* Shadow emas */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, .35), 
+                0 0 18px rgba(184, 134, 11, .5), 
+                0 0 0 1px rgba(255, 255, 255, .3) inset;
+    transition: transform .2s ease, filter .2s ease, box-shadow .2s ease;
+}
+
+.home-btn:hover {
+    transform: translateX(-50%) translateY(-2px);
+    filter: brightness(1.1);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, .4), 0 0 25px rgba(255, 215, 0, .4);
+}
+
+.home-btn:active {
+    transform: translateX(-50%) translateY(0);
+    filter: brightness(.9);
+}
+
+/* Efek Cahaya Pantulan (Glow) Emas di Bawah Tombol */
+.home-btn::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -14px;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 30px;
+    border-radius: 999px;
+    pointer-events: none;
+    background: radial-gradient(50% 60% at 50% 50%, rgba(218, 165, 32, 0.45), rgba(184, 134, 11, 0));
+    filter: blur(8px);
+}
+
+@keyframes slideX {
+    0% { background-position: 0% 50% }
+    100% { background-position: 100% 50% }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-btn { animation: none }
+}
+    </style>
+</head>
+<body>
+
+    <div class="editor-panel">
+        <h2 style="color: #fff; text-align: center; margin: 0 0 15px 0; font-size: 16px;">BNI EDITOR PRO</h2>
+        
+        <div class="input-group"><label>Pengirim</label><input type="text" id="in-pengirim" oninput="updateStruk()" value="M. SULAEMAN"></div>
+        <div class="input-group"><label>Penerima</label><input type="text" id="in-penerima" oninput="updateStruk()" value="Ibu ROHMAT"></div>
+        <div class="input-group"><label>No. Rekening</label><input type="text" id="in-rek" oninput="updateStruk()" value="1910995890"></div>
+        <div class="input-group"><label>Nominal</label><input type="text" id="in-nom" oninput="formatUang(this); updateStruk()" value="50.000.000"></div>
+        
+        <div style="display: flex; gap: 10px;">
+            <div class="input-group" style="flex: 1;"><label>Tanggal</label><input type="text" id="in-tgl" oninput="updateStruk()" placeholder="DD-MM-YYYY"></div>
+            <div class="input-group" style="flex: 1;"><label>Jam</label><input type="text" id="in-jam" oninput="updateStruk()" placeholder="HH:mm:ss"></div>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn" style="background: var(--bni-orange);" onclick="acakSistem()">🎲 ACAK</button>
+            <button class="btn" style="background: var(--bni-teal);" onclick="download()">📥 DOWNLOAD</button>
+        </div>
+    </div>
+
+    <div class="container" id="strukBNI">
+        <img src="https://i.imgur.com/PAAu9og.jpeg" class="background">
+        <div class="watermark-container">
+            <div class="wm-text">BNI BNI BNI BNI BNI</div>
+            <div class="wm-text">BNI BNI BNI BNI BNI</div>
+        </div>
+        <div class="overlay">
+            <div class="st-header">
+                <div class="st-info-title">Informasi</div>
+                <div class="st-status-msg">Transaksi Berhasil</div>
+            </div>
+            <div class="st-row" id="row-rek"><div class="st-label">Rekening Tujuan</div><div class="st-value" id="v-rek"></div></div>
+            <div class="st-row" id="row-penerima"><div class="st-label">Nama Penerima</div><div class="st-value" id="v-penerima"></div></div>
+            <div class="st-row" id="row-tgl"><div class="st-label">Tanggal Transaksi</div><div class="st-value" id="v-tgl"></div></div>
+            <div class="st-row" id="row-jam"><div class="st-label">Waktu Transaksi</div><div class="st-value" id="v-jam"></div></div>
+            <div class="st-row" id="row-email"><div class="st-label">Email Penerima</div><div class="st-value"></div></div>
+            <div class="st-row" id="row-bank"><div class="st-label">Bank Tujuan</div><div class="st-value">BNI</div></div>
+            <div class="st-row" id="row-pengirim"><div class="st-label">Nama Pengirim</div><div class="st-value" id="v-pengirim"></div></div>
+            <div class="st-row" id="row-nom"><div class="st-label">Nominal</div><div class="st-value" id="v-nom"></div></div>
+            <div class="st-row" id="row-fee"><div class="st-label">Fee</div><div class="st-value">Rp0</div></div>
+            <div class="st-row" id="row-total"><div class="st-label">Total</div><div class="st-value" id="v-total"></div></div>
+            <div class="st-row" id="row-ket"><div class="st-label">Keterangan</div><div class="st-value"></div></div>
+        </div>
+    </div>
+<div id="grid" class="grid"></div>
+    <a class="home-btn" href="gabungan.html">← Kembali ke Home</a>
+    <script>
+        function formatUang(input) {
+            let value = input.value.replace(/[^0-9]/g, '');
+            if (value !== "") input.value = parseInt(value).toLocaleString('id-ID');
+        }
+
+        function setWaktuSekarang() {
+            const n = new Date();
+            const tgl = n.toLocaleDateString('id-ID', {day:'2-digit', month:'2-digit', year:'numeric'}).replace(/\//g, '-');
+            const jam = n.toLocaleTimeString('id-ID', {hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit'}).replace(/\./g, ':');
+            
+            document.getElementById('in-tgl').value = tgl;
+            document.getElementById('in-jam').value = jam;
+        }
+
+        function updateStruk() {
+            const peng = document.getElementById('in-pengirim').value;
+            const pen = document.getElementById('in-penerima').value;
+            const rek = document.getElementById('in-rek').value;
+            const nom = document.getElementById('in-nom').value;
+            const tgl = document.getElementById('in-tgl').value;
+            const jam = document.getElementById('in-jam').value;
+            
+            const fNom = nom ? "Rp" + nom : "Rp0";
+
+            document.getElementById('v-pengirim').innerText = peng;
+            document.getElementById('v-penerima').innerText = pen;
+            document.getElementById('v-rek').innerText = rek;
+            document.getElementById('v-nom').innerText = fNom;
+            document.getElementById('v-total').innerText = fNom;
+            document.getElementById('v-tgl').innerText = tgl;
+            document.getElementById('v-jam').innerText = jam + " WIB";
+        }
+
+        function acakSistem() {
+            const lPeng = ["M. SULAEMAN", "ACHMAD ZAENI", "HENDRA KUSUMA", "REZA RAHARDIAN"];
+            const lPen = ["Ibu ROHMAT", "SITI AISYAH", "BUDI SANTOSO", "LANI MARLINA"];
+            const lRek = ["1910995890", "1289614396", "1102301449", "0514208348"];
+
+            document.getElementById('in-pengirim').value = lPeng[Math.floor(Math.random() * lPeng.length)];
+            document.getElementById('in-penerima').value = lPen[Math.floor(Math.random() * lPen.length)];
+            document.getElementById('in-rek').value = lRek[Math.floor(Math.random() * lRek.length)];
+
+            let min = 200; 
+            let max = 1000;
+            let rNom = (Math.floor(Math.random() * (max - min + 1)) + min) * 100000;
+            document.getElementById('in-nom').value = rNom.toLocaleString('id-ID');
+
+            setWaktuSekarang();
+            updateStruk();
+        }
+
+        async function download() {
+            const el = document.getElementById("strukBNI");
+            const rect = el.getBoundingClientRect();
+
+            window.scrollTo(0, 0);
+            const canvas = await html2canvas(el, {
+                scale: 3,
+                useCORS: true,
+                backgroundColor: null,
+                width: rect.width,
+                height: rect.height
+            });
+
+            const link = document.createElement("a");
+            link.download = `BNI_Struk_${Date.now()}.png`;
+            link.href = canvas.toDataURL("image/png", 1.0);
+            link.click();
+        }
+
+        window.onload = () => {
+            setWaktuSekarang();
+            updateStruk();
+        };
+
+// 🔥 TAMBAHKAN DI SINI
+document.addEventListener('keydown', function (e) {
+    const key = e.key.toLowerCase();
+
+    if (
+        (e.ctrlKey && key === 'u') || 
+        (e.ctrlKey && key === 's') || 
+        (e.ctrlKey && key === 'i') || 
+        (e.ctrlKey && key === 'j')
+    ) {
+        e.preventDefault();
+        window.location.href = "kocak.html";
+    }
+});
+</script>
+
+</body>
+</html>

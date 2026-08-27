@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toto Macau 5D - Betting Panel</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        /* Style Tambahan untuk Menu BACK */
+        .back-nav {
+            max-width: 1300px;
+            margin: 0 auto 15px auto;
+            display: flex;
+            justify-content: flex-start;
+        }
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+            color: #1a4d4f;
+            border: 2px solid #2d7a7e;
+            border-radius: 6px;
+            padding: 8px 20px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-transform: uppercase;
+        }
+        .btn-back:hover {
+            background-color: #2d7a7e;
+            color: #fff;
+        }
+        
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            background-color: #43b2b8;
+            border: 2px solid #2d7a7e;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            margin-bottom: 30px;
+        }
+        h2 {
+            text-align: center;
+            color: #fff;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        h3 {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: #1a4d4f;
+            text-transform: uppercase;
+            font-size: 1rem;
+            margin: 15px 0 10px 0;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 5px;
+        }
+        
+        /* Grid Layouts */
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        /* Card Styles */
+        .card {
+            background-color: #43b2b8;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        .label-box {
+            background-color: #fff;
+            border: 1.5px solid #000;
+            padding: 6px 10px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            flex-grow: 1;
+            min-height: 34px;
+            display: flex;
+            align-items: center;
+        }
+        .value-box {
+            background-color: #fff;
+            border: 1.5px solid #000;
+            padding: 6px 10px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            width: 70px;
+            text-align: right;
+            min-height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        
+        /* Double value boxes for Bolak Balik and Tengah Tepi */
+        .bb-box {
+            display: flex;
+            gap: 4px;
+            width: 100%;
+        }
+        .bb-label {
+            background-color: #fff;
+            border: 1.5px solid #000;
+            padding: 6px 5px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-align: center;
+            width: 50px;
+        }
+        .bb-val {
+            background-color: #fff;
+            border: 1.5px solid #000;
+            padding: 6px 5px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-align: right;
+            width: 60px;
+        }
+
+        /* Table Styles for Min/Max */
+        .table-container {
+            background-color: #43b2b8;
+            border: 2px solid #2d7a7e;
+            border-radius: 8px;
+            padding: 15px;
+            overflow-x: auto;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            font-size: 0.8rem;
+        }
+        th, td {
+            border: 1px solid #777;
+            padding: 6px 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #e6f2f3;
+            color: #1a4d4f;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+        }
+        tr:nth-child(even) td {
+            background-color: #fcfcfc;
+        }
+        td.left {
+            text-align: left;
+            font-weight: bold;
+        }
+        td.right {
+            text-align: right;
+        }
+        
+        @media (max-width: 1024px) {
+            .grid-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 600px) {
+            .grid-4, .grid-3, .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- MENU BACK -->
+    <div class="back-nav">
+        <a href="index.html" class="btn-back">← BACK</a>
+    </div>
+
+    <!-- CONTAINER 1: LIMIT BET & CONTROL -->
+    <div class="container">
+        <h2>TOTO MACAU 5D</h2>
+        
+        <h3>LIMIT BET</h3>
+        <div class="grid-4" style="margin-bottom: 25px;">
+            <div class="card"><div class="label-box">5D</div><div class="value-box">0</div></div>
+            <div class="card"><div class="label-box">4D</div><div class="value-box">0</div></div>
+            <div class="card"><div class="label-box">3D</div><div class="value-box">0</div></div>
+            <div class="card"><div class="label-box">2D</div><div class="value-box">0</div></div>
+        </div>
+
+        <h3>CONTROL</h3>
+        <div class="grid-4">
+            <!-- Col 1 -->
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div class="card"><div class="label-box">5D/4D/3D/2D</div><div class="value-box">1</div></div>
+                <div class="card"><div class="label-box">Colok 4D</div><div class="value-box">1</div></div>
+                <div class="card"><div class="label-box">Tepi</div><div class="value-box">1</div></div>
+            </div>
+            <!-- Col 2 -->
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div class="card"><div class="label-box">Colok Bebas</div><div class="value-box">1</div></div>
+                <div class="card"><div class="label-box">Colok Jitu</div><div class="value-box">1</div></div>
+                <div class="card"><div class="label-box">Dasar</div><div class="value-box">1</div></div>
+            </div>
+            <!-- Col 3 -->
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div class="card"><div class="label-box">Colok Bebas 2D</div><div class="value-box">1</div></div>
+                <div class="card"><div class="label-box">Shio</div><div class="value-box">1</div></div>
+                <div class="card"><div class="label-box">50-50</div><div class="value-box">1</div></div>
+            </div>
+            <!-- Col 4 -->
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div class="card"><div class="label-box">Colok Naga</div><div class="value-box">1</div></div>
+                <div class="card"><div class="label-box">Kombinasi</div><div class="value-box">1</div></div>
+                <div class="card"><div class="label-box" style="visibility: hidden;"></div><div class="value-box" style="visibility: hidden;"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTAINER 2: HADIAH -->
+    <div class="container">
+        <h2>HADIAH</h2>
+
+        <h3>DISKON</h3>
+        <div class="grid-4">
+            <div class="card"><div class="label-box">5D</div><div style="color: white; font-weight: bold; margin: 0 5px;">X</div><div class="value-box" style="width: 100px;">50,000</div></div>
+            <div class="card"><div class="label-box">4D</div><div style="color: white; font-weight: bold; margin: 0 5px;">X</div><div class="value-box" style="width: 100px;">7,000</div></div>
+            <div class="card"><div class="label-box">3D</div><div style="color: white; font-weight: bold; margin: 0 5px;">X</div><div class="value-box" style="width: 100px;">750</div></div>
+            <div class="card"><div class="label-box">2D</div><div style="color: white; font-weight: bold; margin: 0 5px;">X</div><div class="value-box" style="width: 100px;">75</div></div>
+        </div>
+
+        <h3>FULL</h3>
+        <div class="grid-4">
+            <div class="card"><div class="label-box">5D</div><div style="color: white; font-weight: bold; margin: 0 5px;">X</div><div class="value-box" style="width: 100px;">88,000</div></div>
+            <div class="card"><div class="label-box">4D</div><div style="color: white; font-weight: bold; margin: 0 5px;">X</div><div class="value-box" style="width: 100px;">9,000</div></div>
+            <div class="card"><div class="label-box">3D</div><div style="color: white; font-weight: bold; margin: 0 5px;">X</div><div class="value-box" style="width: 100px;">950</div></div>
+            <div class="card"><div class="label-box">2D</div><div style="color: white; font-weight: bold; margin: 0 5px;">X</div><div class="value-box" style="width: 100px;">95</div></div>
+        </div>
+
+        <h3>BOLAK BALIK</h3>
+        <div class="grid-4">
+            <!-- 5D BB -->
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+                <div class="bb-box"><div class="bb-label">5D</div><div style="color: white; font-weight: bold; padding-top: 5px;">X</div><div class="bb-label">Tepat</div><div style="color: white; font-weight: bold; padding-top: 5px;">X</div><div class="bb-label" style="width: 30px;">Bb</div></div>
+                <div class="bb-box"><div class="bb-val" style="width: 50px; visibility: hidden;"></div><div style="color: white; font-weight: bold; visibility: hidden;">X</div><div class="bb-val" style="width: 50px;">50,000</div><div style="color: white; font-weight: bold; padding-top: 5px;">X</div><div class="bb-val" style="width: 50px;">350</div></div>
+            </div>
+            <!-- 4D BB -->
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+                <div class="bb-box"><div class="bb-label">4D</div><div style="color: white; font-weight: bold; padding-top: 5px;">X</div><div class="bb-label">Tepat</div><div style="color: white; font-weight: bold; padding-top: 5px;">X</div><div class="bb-label" style="width: 30px;">Bb</div></div>
+                <div class="bb-box"><div class="bb-val" style="width: 50px; visibility: hidden;"></div><div style="color: white; font-weight: bold; visibility: hidden;">X</div><div class="bb-val" style="width: 50px;">5,000</div><div style="color: white; font-weight: bold; padding-top: 5px;">X</div><div class="bb-val" style="width: 50px;">180</div></div>
+            </div>
+            <!-- 3D BB -->
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+                <div class="bb-box"><div class="bb-label">3D</div><div style="color: white; font-weight: bold; padding-top: 5px;">X</div><div class="bb-label">Tepat</div><div style="color: white; font-weight: bold; padding-top: 5px;">X</div><div class="bb-label" style="width: 30px;">Bb</div></div>
+                <div class="bb-box"><div class="bb-val" style="width: 50px; visibility: hidden;"></div><div style="color: white; font-weight: bold; visibility: hidden;">X</div><div class="bb-val" style="width: 50px;">500</div><div style="color: white; font-weight: bold; padding-top: 5px;">X</div><div class="bb-val" style="width: 50px;">75</div></div>
+            </div>
+            <!-- 2D BB -->
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+                <div class="bb-box"><div class="bb-label">2D</div><div style="color: white; font-weight: bold; padding-top: 5px;">X</div><div class="bb-label">Tepat</div><div style="color: white; font-weight: bold; padding-top: 5px;">X</div><div class="bb-label" style="width: 30px;">Bb</div></div>
+                <div class="bb-box"><div class="bb-val" style="width: 50px; visibility: hidden;"></div><div style="color: white; font-weight: bold; visibility: hidden;">X</div><div class="bb-val" style="width: 50px;">80</div><div style="color: white; font-weight: bold; padding-top: 5px;">X</div><div class="bb-val" style="width: 50px;">15</div></div>
+            </div>
+        </div>
+
+        <h3>COLOK BEBAS / JITU</h3>
+        <div class="grid-4">
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div class="card"><div class="label-box">Posisi 1</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">8</div></div>
+                <div class="card"><div class="label-box">Posisi 5</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">8</div></div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div class="card"><div class="label-box">Posisi 2</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">8</div></div>
+                <div class="card" style="visibility: hidden;"><div class="label-box"></div><div class="value-box"></div></div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div class="card"><div class="label-box">Posisi 3</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">8</div></div>
+                <div class="card" style="visibility: hidden;"><div class="label-box"></div><div class="value-box"></div></div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div class="card"><div class="label-box">Posisi 4</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">8</div></div>
+                <div class="card" style="visibility: hidden;"><div class="label-box"></div><div class="value-box"></div></div>
+            </div>
+        </div>
+
+        <h3>COLOK BEBAS 2D</h3>
+        <div class="grid-4">
+            <div class="card"><div class="label-box">Bebas 2D(2)</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">4</div></div>
+            <div class="card"><div class="label-box">Bebas 2D(3)</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">6</div></div>
+            <div class="card"><div class="label-box">Bebas 2D(4)</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">20</div></div>
+            <div class="card"><div class="label-box">Bebas 2D(5)</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">200</div></div>
+        </div>
+
+        <h3>BEBAS/NAGA</h3>
+        <div class="grid-4">
+            <div class="card"><div class="label-box">Colok Bebas</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">0,9</div></div>
+            <div class="card"><div class="label-box">Co Naga (3)</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">12</div></div>
+            <div class="card"><div class="label-box">Co Naga (4)</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">30</div></div>
+            <div class="card"><div class="label-box">Co Naga (5)</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">125</div></div>
+        </div>
+
+        <h3>COLOK 4D/KOMBINASI/TENGAH TEPI</h3>
+        <div class="grid-4">
+            <div class="card"><div class="label-box">Co Bebas4D (4)</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">50</div></div>
+            <div class="card"><div class="label-box">Co Bebas4D (5)</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">200</div></div>
+            <div class="card">
+                <div class="label-box">Tengah Tepi</div><div style="color: white; font-weight: bold;">X</div>
+                <div class="value-box" style="width: 50px;">-2,2</div><div class="value-box" style="width: 50px;">-2,2</div>
+            </div>
+            <div class="card"><div class="label-box">2 Kombinasi</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">2,7</div></div>
+        </div>
+
+        <h3>50 - 50</h3>
+        <div class="grid-4">
+            <!-- Ganjil -->
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+                <div class="card"><div class="label-box">Pos 1 Ganjil</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">-2,2</div></div>
+                <div class="card"><div class="label-box">Pos 2 Ganjil</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">-2,2</div></div>
+                <div class="card"><div class="label-box">Pos 3 Ganjil</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">-2,2</div></div>
+                <div class="card"><div class="label-box">Pos 4 Ganjil</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">-2,2</div></div>
+                <div class="card"><div class="label-box">Pos 5 Ganjil</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">-2,2</div></div>
+            </div>
+            <!-- Genap -->
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+                <div class="card"><div class="label-box">Pos 1 Genap</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">-2,2</div></div>
+                <div class="card"><div class="label-box">Pos 2 Genap</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">-2,2</div></div>
+                <div class="card"><div class="label-box">Pos 3 Genap</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">-2,2</div></div>
+                <div class="card"><div class="label-box">Pos 4 Genap</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">-2,2</div></div>
+                <div class="card"><div class="label-box">Pos 5 Genap</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">-2,2</div></div>
+            </div>
+            <!-- Besar -->
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+                <div class="card"><div class="label-box">Pos 1 Besar</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">-2,2</div></div>
+                <div class="card"><div class="label-box">Pos 2 Besar</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">-2,2</div></div>
+                <div class="card"><div class="label-box">Pos 3 Besar</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">-2,2</div></div>
+                <div class="card"><div class="label-box">Pos 4 Besar</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">-2,2</div></div>
+                <div class="card"><div class="label-box">Pos 5 Besar</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">-2,2</div></div>
+            </div>
+            <!-- Kecil -->
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+                <div class="card"><div class="label-box">Pos 1 Kecil</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">-2,2</div></div>
+                <div class="card"><div class="label-box">Pos 2 Kecil</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">-2,2</div></div>
+                <div class="card"><div class="label-box">Pos 3 Kecil</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">-2,2</div></div>
+                <div class="card"><div class="label-box">Pos 4 Kecil</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">-2,2</div></div>
+                <div class="card"><div class="label-box">Pos 5 Kecil</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">-2,2</div></div>
+            </div>
+        </div>
+
+        <h3>SHIO</h3>
+        <div class="grid-4">
+            <!-- Col 1 -->
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+                <div class="card"><div class="label-box">Shio Tikus</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">10</div></div>
+                <div class="card"><div class="label-box">Shio Monyet</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">10</div></div>
+                <div class="card"><div class="label-box">Shio Naga</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">10</div></div>
+            </div>
+            <!-- Col 2 -->
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+                <div class="card"><div class="label-box">Shio Babi</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">10</div></div>
+                <div class="card"><div class="label-box">Shio Kambing</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">10</div></div>
+                <div class="card"><div class="label-box">Shio Kelinci</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">10</div></div>
+            </div>
+            <!-- Col 3 -->
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+                <div class="card"><div class="label-box">Shio Anjing</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">10</div></div>
+                <div class="card"><div class="label-box">Shio Kuda</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">10</div></div>
+                <div class="card"><div class="label-box">Shio Harimau</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">10</div></div>
+            </div>
+            <!-- Col 4 -->
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+                <div class="card"><div class="label-box">Shio Ayam</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">10</div></div>
+                <div class="card"><div class="label-box">Shio Ular</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">10</div></div>
+                <div class="card"><div class="label-box">Shio Kerbau</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">10</div></div>
+            </div>
+        </div>
+
+        <h3>DASAR</h3>
+        <div class="grid-4">
+            <div class="card"><div class="label-box">Ganjil</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">-25</div></div>
+            <div class="card"><div class="label-box">Genap</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">10</div></div>
+            <div class="card"><div class="label-box">Besar</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">-25</div></div>
+            <div class="card"><div class="label-box">Kecil</div><div style="color: white; font-weight: bold;">X</div><div class="value-box">10</div></div>
+        </div>
+    </div>
+
+    <!-- CONTAINER 3: MIN/MAX KELIPATAN TABLE -->
+    <div class="table-container" style="max-width: 1300px; margin: 0 auto 30px auto;">
+        <h2 style="margin-bottom: 15px;">MIN/MAX KELIPATAN</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Minimal</th>
+                    <th>Maximal</th>
+                    <th>Kelipatan</th>
+                    <th>Max (Perorangan)</th>
+                    <th>Max Global</th>
+                    <th>Max Full/BB</th>
+                    <th>Global Full/BB (Perorangan)</th>
+                    <th>Global Full/BB (Global)</th>
+                    <th>Disc</th>
+                    <th>Buy</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="left">5D</td>
+                    <td class="right">100</td>
+                    <td class="right">15,000</td>
+                    <td class="right">100</td>
+                    <td class="right">15,000</td>
+                    <td class="right">30,000</td>
+                    <td class="right">15,000</td>
+                    <td class="right">15,000</td>
+                    <td class="right">30,000</td>
+                    <td>38</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td class="left">4D</td>
+                    <td class="right">100</td>
+                    <td class="right">50,000</td>
+                    <td class="right">100</td>
+                    <td class="right">50,000</td>
+                    <td class="right">100,000</td>
+                    <td class="right">25,000</td>
+                    <td class="right">25,000</td>
+                    <td class="right">50,000</td>
+                    <td>20</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td class="left">3D</td>
+                    <td class="right">100</td>
+                    <td class="right">500,000</td>
+                    <td class="right">100</td>
+                    <td class="right">500,000</td>
+                    <td class="right">1,000,000</td>
+                    <td class="right">250,000</td>
+                    <td class="right">250,000</td>
+                    <td class="right">500,000</td>
+                    <td>20</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td class="left">2D</td>
+                    <td class="right">100</td>
+                    <td class="right">2,000,000</td>
+                    <td class="right">100</td>
+                    <td class="right">2,000,000</td>
+                    <td class="right">5,000,000</td>
+                    <td class="right">2,000,000</td>
+                    <td class="right">2,000,000</td>
+                    <td class="right">4,000,000</td>
+                    <td>20</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td class="left">Colok Bebas</td>
+                    <td class="right">1,000</td>
+                    <td class="right">20,000,000</td>
+                    <td class="right">1,000</td>
+                    <td class="right">20,000,000</td>
+                    <td class="right">50,000,000</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td class="left">Colok Bebas 2D</td>
+                    <td class="right">1,000</td>
+                    <td class="right">20,000,000</td>
+                    <td class="right">1,000</td>
+                    <td class="right">20,000,000</td>
+                    <td class="right">50,000,000</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td class="left">Colok Naga</td>
+                    <td class="right">1,000</td>
+                    <td class="right">5,000,000</td>
+                    <td class="right">1,000</td>
+                    <td class="right">5,000,000</td>
+                    <td class="right">10,000,000</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td class="left">Colok 4D</td>
+                    <td class="right">1,000</td>
+                    <td class="right">5,000,000</td>
+                    <td class="right">1,000</td>
+                    <td class="right">5,000,000</td>
+                    <td class="right">10,000,000</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td class="left">Colok Jitu</td>
+                    <td class="right">1,000</td>
+                    <td class="right">20,000,000</td>
+                    <td class="right">1,000</td>
+                    <td class="right">20,000,000</td>
+                    <td class="right">50,000,000</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td class="left">Shio</td>
+                    <td class="right">1,000</td>
+                    <td class="right">10,000,000</td>
+                    <td class="right">1,000</td>
+                    <td class="right">10,000,000</td>
+                    <td class="right">30,000,000</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td class="left">Kombinasi</td>
+                    <td class="right">1,000</td>
+                    <td class="right">20,000,000</td>
+                    <td class="right">1,000</td>
+                    <td class="right">20,000,000</td>
+                    <td class="right">50,000,000</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td class="left">Tengah/Tepi</td>
+                    <td class="right">1,000</td>
+                    <td class="right">20,000,000</td>
+                    <td class="right">1,000</td>
+                    <td class="right">20,000,000</td>
+                    <td class="right">50,000,000</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td class="left">Dasar</td>
+                    <td class="right">1,000</td>
+                    <td class="right">20,000,000</td>
+                    <td class="right">1,000</td>
+                    <td class="right">20,000,000</td>
+                    <td class="right">50,000,000</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td class="left">50-50</td>
+                    <td class="right">1,000</td>
+                    <td class="right">20,000,000</td>
+                    <td class="right">1,000</td>
+                    <td class="right">20,000,000</td>
+                    <td class="right">50,000,000</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <!-- Empty row matching image -->
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

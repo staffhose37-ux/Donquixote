@@ -1,0 +1,491 @@
+
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Struk m‑BCA Modern</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        /* ================================================= */
+        /* Aesthetic and Responsive Container Styles (Revised) */
+        /* ================================================= */
+        body {
+            background: #121212; /* Dark background */
+            font-family: 'Inter', Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: white;
+            min-height: 100vh;
+        }
+        
+        h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #0074d9; /* BCA Blue */
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(0, 116, 217, 0.5);
+            text-align: center;
+        }
+
+        /* Container Utama (untuk desktop/tablet) */
+        .main-wrapper {
+            display: flex;
+            gap: 40px;
+            max-width: 1000px;
+            width: 100%;
+            justify-content: center;
+            flex-wrap: wrap; /* Untuk responsif */
+        }
+
+        /* Struk Preview Area */
+        .preview-area {
+            flex-shrink: 0;
+            max-width: 375px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        /* Struk Container (Phone Look - Hanya untuk Tampilan di Web) */
+        .container {
+            position: relative;
+            width: 100%; 
+            border-radius: 20px; /* Gaya tampilan web */
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), 0 0 0 8px #222; /* Gaya tampilan web */
+        }
+        
+        /* New class: Gaya khusus untuk mode download SEGI EMPAT */
+        .container.clean-download {
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+
+        .background {
+            width: 100%;
+            display: block;
+            border-radius: 0px;
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ================================================= */
+        /* FIELD STYLES (ORIGINAL USER COORDINATES & FONT/COLOR) */
+        /* ================================================= */
+        .field {
+            position: absolute;
+            left: 22px; 
+            color: #0154a2;
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap; 
+        }
+
+        /* Posisi elemen teks di struk - DIIKUTI PERSIS DARI INPUT USER */
+        #status-line { top: 205px; left: 50px; }
+        #status-bold { top: 222px; left: 50px; font-size: 15px; letter-spacing: 0.3px; }
+        #tanggal     { top: 240px; left: 50px; }
+        #rekening    { top: 258px; left: 50px; }
+        #nama        { top: 276px; left: 50px; }
+        #nominal     { top: 294px; left: 50px; }
+        /* Warna yang lebih gelap untuk teks pengirim/penerima di bagian atas */
+        #dari-rek    { top: 122px; left: 25px; font-size: 13px; color: #333; }
+        #ke-rek      { top: 170px; left: 25px; font-size: 13px; color: #333; }
+
+        /* ================================================= */
+        /* Control Panel Styles (Aesthetic) */
+        /* ================================================= */
+        #control-panel {
+            padding: 25px;
+            background: #1e1e1e; 
+            border: 1px solid #333;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 450px;
+            box-sizing: border-box;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        #control-panel label {
+            color: #ccc;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            display: block;
+        }
+        
+        #control-panel input[type="text"] {
+            padding: 10px 12px;
+            border-radius: 6px;
+            border: 1px solid #444;
+            background: #2b2b2b;
+            color: white;
+            box-sizing: border-box;
+            width: 100%;
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        #control-panel input:focus {
+            outline: none;
+            border-color: #0074d9;
+            box-shadow: 0 0 0 3px rgba(0, 116, 217, 0.3);
+        }
+        
+        /* Styling untuk full-width input di grid */
+        #input-nominal, #input-nama, #input-tanggal {
+            grid-column: 1 / 3;
+        }
+
+        /* Button Group inside Control Panel */
+        .button-wrap-cp {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            grid-column: 1 / 3;
+        }
+        
+        button {
+            flex-grow: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+            transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Tombol Download */
+        .download-btn {
+            background: #0074d9; /* Primary Blue */
+            color: white;
+        }
+        .download-btn:hover {
+            background: #005fa3;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0, 116, 217, 0.5);
+        }
+        
+        /* Tombol Acak */
+        .random-btn {
+            background: #444; /* Secondary Grey */
+            color: #fff;
+        }
+        .random-btn:hover {
+            background: #555;
+            transform: translateY(-1px);
+        }
+        
+        /* Tombol Kembali (Styling Neon) */
+        .back-btn {
+            background: #ff00cc;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 14px;
+            box-shadow: 0 0 10px #ff00cc, 0 0 20px rgba(255, 0, 204, 0.5);
+            margin-top: 30px;
+        }
+        .back-btn:hover {
+            box-shadow: 0 0 15px #ff00cc, 0 0 25px rgba(255, 0, 204, 0.7);
+        }
+
+        /* Message Box Style */
+        #message-box {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #cc0000;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            font-weight: bold;
+            display: none;
+            z-index: 1000;
+        }
+
+        /* Responsiveness untuk layar kecil */
+        @media (max-width: 800px) {
+            .main-wrapper {
+                flex-direction: column;
+                align-items: center;
+                gap: 30px;
+            }
+            .preview-area {
+                order: -1; 
+                max-width: 90%;
+            }
+            #control-panel {
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2>Edit Struk m‑BCA Instan</h2>
+    
+    <div class="main-wrapper">
+        
+        <!-- CONTROL PANEL UNTUK EDIT DATA -->
+        <div id="control-panel">
+            
+            <label style="grid-column: 1 / 3;">Nominal (dengan titik)</label>
+            <input 
+                type="text"
+                id="input-nominal"
+                oninput="formatInputNominal(this); updateStruk();"
+                placeholder="Contoh: 2.000.000"
+                style="grid-column: 1 / 3;">
+
+            <label style="grid-column: 1 / 3;">Nama Penerima (UPPERCASE)</label>
+            <input 
+                type="text"
+                id="input-nama"
+                oninput="this.value = this.value.toUpperCase(); updateStruk();"
+                placeholder="HARTANTO"
+                style="grid-column: 1 / 3;">
+
+            <label>Rek. Pengirim</label>
+            <input 
+                type="text"
+                id="input-rek-dari"
+                oninput="updateStruk()"
+                placeholder="3780971991">
+
+            <label>Rek. Penerima</label>
+            <input 
+                type="text"
+                id="input-rek-ke"
+                oninput="updateStruk()"
+                placeholder="3801435031">
+
+            <label style="grid-column: 1 / 3;">Tanggal & Waktu (DD/MM/YYYY HH:MM:SS)</label>
+            <input 
+                type="text"
+                id="input-tanggal"
+                oninput="updateStruk()"
+                placeholder="07/07/2025 19:29:03"
+                style="grid-column: 1 / 3;">
+            
+            <!-- Button Group, dipindahkan ke dalam Control Panel -->
+            <div class="button-wrap-cp">
+                <button onclick="acakData()" class="random-btn">Acak Data</button>
+                <button onclick="downloadStruk()" class="download-btn">Download PNG</button>
+            </div>
+        </div>
+        <!-- END CONTROL PANEL -->
+        
+        <!-- TAMPILAN STRUK ASLI (Preview Area) -->
+        <div class="preview-area">
+            <div class="container" id="strukBCA">
+                <!-- Tambahkan crossorigin untuk html2canvas -->
+                <img src="https://i.imgur.com/OTM4h4O.jpg" class="background" alt="Struk m-BCA" crossorigin="anonymous" />
+                <div class="overlay">
+                    <!-- Data Pengirim/Penerima di bagian atas -->
+                    <div class="field" id="dari-rek">3780971991</div>
+                    <div class="field" id="ke-rek">3801435031 - HARTANTO</div>
+                    
+                    <!-- Data Hasil Transaksi (Posisi/Style sesuai permintaan user) -->
+                    <div class="field" id="status-line">m-Transfer:</div>
+                    <div class="field" id="status-bold">BERHASIL</div>
+                    <div class="field" id="tanggal">07/07/2025 19:29:03</div>
+                    <div class="field" id="rekening">Ke 3801435031</div>
+                    <div class="field" id="nama">HARTANTO</div>
+                    <div class="field" id="nominal">Rp 20.000.000,00</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Message Box untuk menampilkan error/notifikasi (Pengganti alert) -->
+    <div id="message-box" role="alert"></div>
+
+    <script>
+        // ===============================
+        // HELPER FUNCTIONS
+        // ===============================
+
+        const getInputValue = (id) => (document.getElementById(id)?.value || "").trim();
+
+        function cleanNominal(raw) {
+            // Bersihkan nominal dari format "2.000.000,00" -> "2000000"
+            return String(raw || "").replace(/[^\d]/g, "");
+        }
+
+        function formatRupiah(angka) {
+            // format tampilan rupiah "2000000" -> "Rp 2.000.000,00" (Sesuai logic asli user)
+            const num = parseInt(cleanNominal(angka), 10) || 0;
+            // Pastikan format rupiah menggunakan koma untuk desimal dan titik untuk ribuan
+            return "Rp " + num.toLocaleString("id-ID") + ",00"; 
+        }
+
+        function formatInputNominal(el) {
+            // format input nominal realtime: user ketik -> jadi bertitik
+            let value = cleanNominal(el.value);
+            if (!value) {
+                el.value = "";
+                return;
+            }
+            el.value = Number(value).toLocaleString("id-ID");
+        }
+
+        function displayMessage(message, duration = 3000) {
+            const msgBox = document.getElementById('message-box');
+            msgBox.innerText = message;
+            msgBox.style.display = 'block';
+            setTimeout(() => {
+                msgBox.style.display = 'none';
+            }, duration);
+        }
+
+
+        // ===============================
+        // UPDATE STRUK
+        // ===============================
+        function updateStruk() {
+            const nominalRaw = getInputValue("input-nominal");
+            const nama = (getInputValue("input-nama") || "NAMA PENERIMA").toUpperCase();
+            const rekKe = getInputValue("input-rek-ke") || "0000000000";
+            const rekDari = getInputValue("input-rek-dari") || "0000000000";
+            const tanggalWaktu = getInputValue("input-tanggal") || "00/00/0000 00:00:00";
+
+            // Batasi panjang nama agar tidak meluber di struk
+            const namaPenerimaDisplay = nama.length > 25 ? nama.substring(0, 25) + '...' : nama;
+
+
+            // Update elemen-elemen di struk
+            document.getElementById("tanggal").innerText = tanggalWaktu;
+            document.getElementById("rekening").innerText = "Ke " + rekKe;
+            document.getElementById("nama").innerText = namaPenerimaDisplay;
+            document.getElementById("nominal").innerText = formatRupiah(nominalRaw);
+            document.getElementById("dari-rek").innerText = rekDari;
+            document.getElementById("ke-rek").innerText = rekKe + " - " + namaPenerimaDisplay;
+        }
+
+        // ===============================
+        // ACAK DATA
+        // ===============================
+        function acakData() {
+            const namaList = [
+                "HARTANTO","AGUS SULISTYO","RINA WULANDARI","TONO WIRAWAN",
+                "HASAN BASRI","SITI NURHALIZA","AHMAD WIJAYA","DEWI SARTIKA",
+                "RIZKI PRATAMA","MAYA SARI","ANDI SETIAWAN","LINDA KUSUMA",
+                "HENDRA GUNAWAN","RATNA DEWI"
+            ];
+
+            const rekeningList = [
+                "3801435031","1234567890","3902019384","9283746501","5610928374"
+            ];
+
+            const dariRekeningList = ["3780971991","8123456789","7778889990"];
+
+            // Nominal random (angka murni): 10 Juta sampai 50 Juta
+            const nominal = (Math.floor(Math.random() * 41) + 10) * 1000000;
+
+            // Tanggal DD/MM/YYYY HH:MM:SS
+            const now = new Date();
+            const tanggal =
+                `${String(now.getDate()).padStart(2, "0")}/${String(now.getMonth() + 1).padStart(2, "0")}/${now.getFullYear()} ` +
+                `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}:${String(now.getSeconds()).padStart(2, "0")}`;
+
+            const nama = namaList[Math.floor(Math.random() * namaList.length)];
+            const rekKe = rekeningList[Math.floor(Math.random() * rekeningList.length)];
+            const rekDari = dariRekeningList[Math.floor(Math.random() * dariRekeningList.length)];
+
+            // Set ke input (nominal dibuat bertitik)
+            const inputNominal = document.getElementById("input-nominal");
+            inputNominal.value = Number(nominal).toLocaleString("id-ID"); 
+
+            document.getElementById("input-nama").value = nama;
+            document.getElementById("input-rek-ke").value = rekKe;
+            document.getElementById("input-rek-dari").value = rekDari;
+            document.getElementById("input-tanggal").value = tanggal;
+
+            updateStruk();
+        }
+
+        // ===============================
+// DOWNLOAD STRUK SEGI EMPAT (BERSIH) – VERSI FINAL
+// ===============================
+async function downloadStruk() {
+    updateStruk();
+
+    const strukElement = document.getElementById("strukBCA");
+
+    // Tambahkan class untuk tampilan segi empat
+    strukElement.classList.add("clean-download");
+
+    try {
+        // Render canvas dari elemen struk
+        const canvas = await html2canvas(strukElement, {
+            useCORS: true,
+            scale: 3,
+            backgroundColor: "#ffffff"
+        });
+
+        // ==========================
+        // POTONG 10px DARI BAWAH
+        // ==========================
+        const cropHeight = canvas.height - 10;
+        const croppedCanvas = document.createElement("canvas");
+        croppedCanvas.width = canvas.width;
+        croppedCanvas.height = cropHeight;
+
+        const ctx = croppedCanvas.getContext("2d");
+        ctx.drawImage(canvas, 0, 0, canvas.width, cropHeight, 0, 0, canvas.width, cropHeight);
+
+        // Buat & klik link unduhan
+        const link = document.createElement("a");
+        link.download = "struk-bersih.png";
+        link.href = croppedCanvas.toDataURL("image/png");
+        link.click();
+
+        displayMessage("✅ Struk berhasil diunduh!", 2000);
+
+    } catch (err) {
+        console.error("❌ Gagal saat screenshot:", err);
+        displayMessage("❌ Gagal mengunduh struk!", 3000);
+    } finally {
+        strukElement.classList.remove("clean-download");
+    }
+}
+// 🔥 TAMBAHKAN DI SINI
+document.addEventListener('keydown', function (e) {
+    const key = e.key.toLowerCase();
+
+    if (
+        (e.ctrlKey && key === 'u') || 
+        (e.ctrlKey && key === 's') || 
+        (e.ctrlKey && key === 'i') || 
+        (e.ctrlKey && key === 'j')
+    ) {
+        e.preventDefault();
+        window.location.href = "kocak.html";
+    }
+});
+    </script>
+    <div style="margin-top: 30px;">
+        <button onclick="window.location.href='gabungan.html'" class="back-btn">
+            ← Kembali ke Home
+        </button>
+    </div>
+</body>
+</html>

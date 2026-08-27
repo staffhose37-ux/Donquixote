@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maroon Dashboard Pro - Bank Checker</title>
+
+<!-- Favicon Config -->
+<link rel="icon" type="image/png" href="ayutogel2.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ================== CONFIG RESET & UTAMA ================== */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Poppins,sans-serif;
+    font-weight:700;
+}
+
+/* Mengubah kursor default untuk seluruh halaman */
+html, body {
+    cursor: url('cursor.png'), auto;
+}
+
+/* Mengubah kursor untuk elemen yang bisa diklik / di-interaksi */
+a, button, input, textarea, select, .action-btn, .btn-menu, .dash-link, .copy-btn-kpi {
+    cursor: url('cursor.png'), pointer !important;
+}
+
+body {
+    background: radial-gradient(circle at top, #2a0008 0%, #0a0102 60%, #000 100%);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding:30px 15px;
+    color:white;
+    overflow-x:hidden;
+}
+
+/* Glow Maroon Effects */
+body::before{
+    content:"";
+    position:absolute;
+    width:600px;
+    height:600px;
+    background:radial-gradient(circle, rgba(123,0,28,0.3), transparent 60%);
+    top:-120px;
+    left:-120px;
+    filter:blur(40px);
+    z-index:-1;
+}
+
+body::after{
+    content:"";
+    position:absolute;
+    width:500px;
+    height:500px;
+    background:radial-gradient(circle, rgba(139,0,0,0.2), transparent 60%);
+    bottom:-120px;
+    right:-120px;
+    filter:blur(40px);
+    z-index:-1;
+}
+
+/* CONTAINER PANEL UTAMA (DENGAN BACKGROUND VIDEO) */
+.glass-panel{
+    position: relative;
+    width:100%;
+    max-width:1100px;
+    background:rgba(25, 4, 10, 0.55);
+    backdrop-filter:blur(18px);
+    border-radius:18px;
+    border:1px solid rgba(255, 59, 92, 0.2);
+    box-shadow:0 30px 80px rgba(0,0,0,0.85);
+    padding:25px;
+    overflow:visible;
+}
+
+/* Video Background di dalam kotak */
+.bg-video-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.35;
+    pointer-events: none;
+    border-radius:18px;
+}
+
+/* Memastikan konten utama berada di atas video background */
+.top-row, .ticker, .menu-container {
+    position: relative;
+    z-index: 1;
+}
+
+/* TOP HEADER ROW */
+.top-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.back-links {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-back {
+    font-size: 0.8rem;
+    color: #ff5c7c;
+    background: rgba(0,0,0,0.45);
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 59, 92, 0.3);
+    text-decoration: none;
+    transition: 0.25s ease;
+}
+
+.btn-back:hover {
+    background: linear-gradient(135deg, #a80027, #ff3b5c);
+    color: #fff;
+    box-shadow: 0 0 15px rgba(255, 59, 92, 0.5);
+}
+
+#live-time{
+    font-size:0.85rem;
+    color:#ff5c7c;
+    background:rgba(0,0,0,0.45);
+    padding:8px 14px;
+    border-radius:8px;
+    border:1px solid rgba(255, 59, 92, 0.3);
+}
+
+/* TEXT ANIMASI TICKER */
+.ticker{
+    margin-top:14px;
+    background:#120006;
+    border:1px solid rgba(255, 59, 92, 0.2);
+    padding:10px;
+    border-radius:8px;
+    overflow:hidden;
+    white-space:nowrap;
+}
+
+.ticker span{
+    display:inline-block;
+    padding-left:100%;
+    animation:scroll 25s linear infinite;
+    font-size:0.9rem;
+    letter-spacing: 0.5px;
+    color: #ff4d6d;
+}
+
+@keyframes scroll{
+    0%{transform:translateX(0);}
+    100%{transform:translateX(-100%);}
+}
+
+/* SISTEM MENU UTAMA */
+.menu-container{
+    display:flex;
+    gap:12px;
+    margin-top:55px;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+.btn-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.btn-menu{
+    width: 100%;
+    padding:16px 32px;
+    border-radius:12px;
+    border:1px solid rgba(255, 59, 92, 0.25);
+    background:rgba(0,0,0,0.4);
+    color:white;
+    font-weight:800;
+    transition: all 0.25s ease;
+    font-size:0.9rem;
+    min-width:160px;
+    text-align:center;
+    letter-spacing:0.5px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.hover-logo {
+    position: absolute;
+    top: -52px;
+    left: 50%;
+    transform: translateX(-50%) translateY(12px);
+    height: 45px;
+    width: auto;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: all 0.25s ease;
+}
+
+.btn-wrapper:hover .hover-logo {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.btn-wrapper:hover .btn-menu, .btn-menu.active{
+    background: linear-gradient(135deg, #a80027, #ff3b5c);
+    color: #ffffff;
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 -15px 25px rgba(255, 59, 92, 0.6);
+    border-color: rgba(255, 92, 124, 0.8);
+}
+</style>
+</head>
+
+<body>
+
+<div class="glass-panel">
+    <!-- Video Background -->
+    <video autoplay loop muted playsinline class="bg-video-panel">
+        <source src="video_616eeacb5c57.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="top-row">
+        <!-- Tombol Back di Pojok Kiri Atas -->
+        <div class="back-links">
+            <a href="index.html" class="btn-back">← BACK</a>
+        </div>
+        <div id="live-time">Loading...</div>
+    </div>
+
+    <div class="ticker">
+        <span>Sistem Pengelolaan Rekening Khusus BCA, BNI, BNI WONDER, dan MANDIRI. Pastikan data yang dimasukkan sudah benar.</span>
+    </div>
+
+    <!-- 4 Menu Utama -->
+    <div class="menu-container">
+        <div class="btn-wrapper">
+            <img src="ayutogellogo1.png" class="hover-logo" alt="Hover Logo" onerror="this.style.display='none'">
+            <a href="bca.html" class="btn-menu active" id="nav-bca">BCA</a>
+        </div>
+        
+        <div class="btn-wrapper">
+            <img src="ayutogellogo1.png" class="hover-logo" alt="Hover Logo" onerror="this.style.display='none'">
+            <a href="bni.html" class="btn-menu" id="nav-bni">BNI</a>
+        </div>
+        
+        <div class="btn-wrapper">
+            <img src="ayutogellogo1.png" class="hover-logo" alt="Hover Logo" onerror="this.style.display='none'">
+            <a href="bniwonder.html" class="btn-menu" id="nav-bni-wonder">BNI WONDER</a>
+        </div>
+        
+        <div class="btn-wrapper">
+            <img src="ayutogellogo1.png" class="hover-logo" alt="Hover Logo" onerror="this.style.display='none'">
+            <a href="mandiri.html" class="btn-menu" id="nav-mandiri">MANDIRI</a>
+        </div>
+    </div>
+
+</div>
+
+<script>
+/* ================== JAM DIGITAL ================== */
+function updateClock(){
+    const now=new Date();
+    const hari=["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+    const bulan=["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
+
+    document.getElementById("live-time").innerText =
+        hari[now.getDay()]+", "+ now.getDate()+" "+bulan[now.getMonth()]+" "+now.getFullYear()+" - "+
+        String(now.getHours()).padStart(2,'0')+":"+String(now.getMinutes()).padStart(2,'0')+":"+String(now.getSeconds()).padStart(2,'0');
+}
+setInterval(updateClock,1000);
+updateClock();
+</script>
+</body>
+</html>
