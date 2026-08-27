@@ -1,287 +1,1367 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Maroon Dashboard Pro - Bank Checker</title>
 
-<!-- Favicon Config -->
+<title>Bank Checker Dashboard</title>
+
 <link rel="icon" type="image/png" href="ayutogel2.png">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+
 
 <style>
-/* ================== CONFIG RESET & UTAMA ================== */
+
+/* =========================================================
+   RESET
+========================================================= */
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Poppins,sans-serif;
-    font-weight:700;
 }
 
-/* Mengubah kursor default untuk seluruh halaman */
-html, body {
-    cursor: url('cursor.png'), auto;
-}
-
-/* Mengubah kursor untuk elemen yang bisa diklik / di-interaksi */
-a, button, input, textarea, select, .action-btn, .btn-menu, .dash-link, .copy-btn-kpi {
-    cursor: url('cursor.png'), pointer !important;
-}
-
-body {
-    background: radial-gradient(circle at top, #2a0008 0%, #0a0102 60%, #000 100%);
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:flex-start;
-    padding:30px 15px;
-    color:white;
-    overflow-x:hidden;
-}
-
-/* Glow Maroon Effects */
-body::before{
-    content:"";
-    position:absolute;
-    width:600px;
-    height:600px;
-    background:radial-gradient(circle, rgba(123,0,28,0.3), transparent 60%);
-    top:-120px;
-    left:-120px;
-    filter:blur(40px);
-    z-index:-1;
-}
-
-body::after{
-    content:"";
-    position:absolute;
-    width:500px;
-    height:500px;
-    background:radial-gradient(circle, rgba(139,0,0,0.2), transparent 60%);
-    bottom:-120px;
-    right:-120px;
-    filter:blur(40px);
-    z-index:-1;
-}
-
-/* CONTAINER PANEL UTAMA (DENGAN BACKGROUND VIDEO) */
-.glass-panel{
-    position: relative;
+html,
+body{
     width:100%;
-    max-width:1100px;
-    background:rgba(25, 4, 10, 0.55);
-    backdrop-filter:blur(18px);
-    border-radius:18px;
-    border:1px solid rgba(255, 59, 92, 0.2);
-    box-shadow:0 30px 80px rgba(0,0,0,0.85);
+    min-height:100%;
+}
+
+body{
+    min-height:100vh;
+
+    background:
+        radial-gradient(
+            circle at 50% -20%,
+            rgba(0,234,255,.08),
+            transparent 45%
+        ),
+        radial-gradient(
+            circle at 0% 100%,
+            rgba(0,100,255,.06),
+            transparent 35%
+        ),
+        #020405;
+
+    color:#fff;
+
+    font-family:
+        "Barlow Condensed",
+        Arial,
+        sans-serif;
+
+    overflow-x:hidden;
+
     padding:25px;
-    overflow:visible;
 }
 
-/* Video Background di dalam kotak */
-.bg-video-panel {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -1;
-    opacity: 0.35;
-    pointer-events: none;
-    border-radius:18px;
+
+/* =========================================================
+   CUSTOM CURSOR
+========================================================= */
+
+html,
+body{
+    cursor:url('cursor.png'), auto;
 }
 
-/* Memastikan konten utama berada di atas video background */
-.top-row, .ticker, .menu-container {
-    position: relative;
-    z-index: 1;
+a,
+button,
+input,
+textarea,
+select{
+    cursor:url('cursor.png'), pointer !important;
 }
 
-/* TOP HEADER ROW */
+
+/* =========================================================
+   PARTICLES / STARS
+========================================================= */
+
+.stars{
+    position:fixed;
+    inset:0;
+
+    overflow:hidden;
+
+    pointer-events:none;
+
+    z-index:0;
+}
+
+.stars span{
+    position:absolute;
+
+    width:2px;
+    height:2px;
+
+    border-radius:50%;
+
+    background:#00eaff;
+
+    box-shadow:
+        0 0 5px #00eaff,
+        0 0 10px rgba(0,234,255,.6);
+
+    animation:
+        twinkle 3s ease-in-out infinite;
+}
+
+
+/* posisi particle */
+
+.stars span:nth-child(1){
+    left:8%;
+    top:15%;
+    animation-delay:.2s;
+}
+
+.stars span:nth-child(2){
+    left:22%;
+    top:65%;
+    animation-delay:1.1s;
+}
+
+.stars span:nth-child(3){
+    left:37%;
+    top:25%;
+    animation-delay:2s;
+}
+
+.stars span:nth-child(4){
+    left:48%;
+    top:78%;
+    animation-delay:.5s;
+}
+
+.stars span:nth-child(5){
+    left:61%;
+    top:12%;
+    animation-delay:1.6s;
+}
+
+.stars span:nth-child(6){
+    left:72%;
+    top:43%;
+    animation-delay:2.4s;
+}
+
+.stars span:nth-child(7){
+    left:84%;
+    top:22%;
+    animation-delay:.8s;
+}
+
+.stars span:nth-child(8){
+    left:96%;
+    top:70%;
+    animation-delay:1.8s;
+}
+
+.stars span:nth-child(9){
+    left:93%;
+    top:49%;
+    animation-delay:2.2s;
+}
+
+.stars span:nth-child(10){
+    left:54%;
+    top:52%;
+    animation-delay:.9s;
+}
+
+.stars span:nth-child(11){
+    left:12%;
+    top:46%;
+    animation-delay:1.4s;
+}
+
+.stars span:nth-child(12){
+    left:88%;
+    top:81%;
+    animation-delay:.3s;
+}
+
+
+@keyframes twinkle{
+
+    0%,
+    100%{
+        opacity:.2;
+        transform:scale(.7);
+    }
+
+    50%{
+        opacity:1;
+        transform:scale(1.8);
+    }
+
+}
+
+
+/* =========================================================
+   MAIN PANEL
+========================================================= */
+
+.glass-panel{
+
+    position:relative;
+
+    width:100%;
+
+    max-width:1450px;
+
+    margin:auto;
+
+    padding:25px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(12,17,21,.96),
+            rgba(3,6,8,.94)
+        );
+
+    border:
+        1px solid
+        rgba(0,234,255,.22);
+
+    border-radius:22px;
+
+    box-shadow:
+        0 35px 100px rgba(0,0,0,.9),
+        0 0 50px rgba(0,234,255,.06);
+
+    overflow:hidden;
+
+    z-index:1;
+}
+
+
+/* =========================================================
+   ANIMATED BORDER
+========================================================= */
+
+.glass-panel::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    padding:1px;
+
+    border-radius:22px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(0,234,255,.9),
+            transparent,
+            rgba(0,150,255,.8),
+            transparent
+        );
+
+    background-size:300% 100%;
+
+    animation:
+        borderRun 5s linear infinite;
+
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+
+    -webkit-mask-composite:xor;
+
+    mask-composite:exclude;
+
+    pointer-events:none;
+
+    z-index:10;
+}
+
+
+@keyframes borderRun{
+
+    0%{
+        background-position:0% 50%;
+    }
+
+    100%{
+        background-position:300% 50%;
+    }
+
+}
+
+
+/* =========================================================
+   VIDEO
+========================================================= */
+
+.bg-video-panel{
+
+    position:absolute;
+
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    opacity:.10;
+
+    pointer-events:none;
+
+    z-index:0;
+
+    mix-blend-mode:screen;
+}
+
+
+/* =========================================================
+   LIGHT SWEEP
+========================================================= */
+
+.glass-panel::after{
+
+    content:"";
+
+    position:absolute;
+
+    top:-100%;
+
+    left:-30%;
+
+    width:18%;
+
+    height:300%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.05),
+            rgba(0,234,255,.18),
+            rgba(255,255,255,.04),
+            transparent
+        );
+
+    transform:rotate(18deg);
+
+    animation:
+        lightSweep 7s linear infinite;
+
+    pointer-events:none;
+
+    z-index:2;
+}
+
+
+@keyframes lightSweep{
+
+    0%{
+        left:-40%;
+    }
+
+    100%{
+        left:140%;
+    }
+
+}
+
+
+/* =========================================================
+   CONTENT LAYER
+========================================================= */
+
+.top-row,
+.ticker,
+.menu-container{
+
+    position:relative;
+
+    z-index:5;
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
 .top-row{
+
     display:flex;
-    justify-content:space-between;
+
     align-items:center;
+
+    justify-content:space-between;
+
+    gap:20px;
 }
 
-.back-links {
-    display: flex;
-    gap: 10px;
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.back-links{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
 }
 
-.btn-back {
-    font-size: 0.8rem;
-    color: #ff5c7c;
-    background: rgba(0,0,0,0.45);
-    padding: 8px 14px;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 59, 92, 0.3);
-    text-decoration: none;
-    transition: 0.25s ease;
+
+.btn-back{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:
+        10px
+        18px;
+
+    color:#dfffff;
+
+    background:
+        rgba(0,234,255,.05);
+
+    border:
+        1px solid
+        rgba(0,234,255,.25);
+
+    border-radius:8px;
+
+    text-decoration:none;
+
+    font-size:13px;
+
+    font-weight:900;
+
+    letter-spacing:1px;
+
+    transition:.25s;
 }
 
-.btn-back:hover {
-    background: linear-gradient(135deg, #a80027, #ff3b5c);
-    color: #fff;
-    box-shadow: 0 0 15px rgba(255, 59, 92, 0.5);
+
+.btn-back:hover{
+
+    color:#fff;
+
+    border-color:#00eaff;
+
+    background:
+        rgba(0,234,255,.18);
+
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        0 0 12px
+        rgba(0,234,255,.3),
+
+        0 0 25px
+        rgba(0,234,255,.1);
 }
+
+
+/* =========================================================
+   CLOCK
+========================================================= */
 
 #live-time{
-    font-size:0.85rem;
-    color:#ff5c7c;
-    background:rgba(0,0,0,0.45);
-    padding:8px 14px;
-    border-radius:8px;
-    border:1px solid rgba(255, 59, 92, 0.3);
+
+    padding:
+        10px
+        18px;
+
+    color:#fff;
+
+    font-family:
+        "Orbitron",
+        sans-serif;
+
+    font-size:11px;
+
+    letter-spacing:1px;
+
+    background:
+        rgba(0,0,0,.55);
+
+    border:
+        1px solid
+        rgba(0,234,255,.25);
+
+    border-radius:10px;
+
+    box-shadow:
+        inset 0 0 15px
+        rgba(0,234,255,.04),
+
+        0 0 15px
+        rgba(0,234,255,.05);
+
+    text-shadow:
+        0 0 8px
+        rgba(0,234,255,.6);
 }
 
-/* TEXT ANIMASI TICKER */
+
+/* =========================================================
+   TICKER
+========================================================= */
+
 .ticker{
-    margin-top:14px;
-    background:#120006;
-    border:1px solid rgba(255, 59, 92, 0.2);
-    padding:10px;
-    border-radius:8px;
+
+    position:relative;
+
+    margin-top:18px;
+
+    padding:
+        11px
+        15px;
+
+    border-radius:10px;
+
     overflow:hidden;
+
     white-space:nowrap;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,234,255,.08),
+            rgba(0,0,0,.6),
+            rgba(0,150,255,.06)
+        );
+
+    border:
+        1px solid
+        rgba(0,234,255,.18);
+
+    box-shadow:
+        inset 0 0 20px
+        rgba(0,234,255,.03),
+
+        0 0 15px
+        rgba(0,234,255,.04);
 }
+
+
+/* ticker light */
+
+.ticker::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:-100px;
+
+    width:80px;
+
+    height:100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(0,234,255,.7),
+            transparent
+        );
+
+    filter:blur(4px);
+
+    animation:
+        tickerLight 4s linear infinite;
+}
+
+
+@keyframes tickerLight{
+
+    from{
+        left:-100px;
+    }
+
+    to{
+        left:110%;
+    }
+
+}
+
 
 .ticker span{
+
     display:inline-block;
+
     padding-left:100%;
-    animation:scroll 25s linear infinite;
-    font-size:0.9rem;
-    letter-spacing: 0.5px;
-    color: #ff4d6d;
+
+    font-size:14px;
+
+    letter-spacing:1px;
+
+    color:#dffcff;
+
+    text-shadow:
+        0 0 8px
+        rgba(0,234,255,.4);
+
+    animation:
+        scroll 28s linear infinite;
 }
+
 
 @keyframes scroll{
-    0%{transform:translateX(0);}
-    100%{transform:translateX(-100%);}
+
+    0%{
+        transform:translateX(0);
+    }
+
+    100%{
+        transform:translateX(-100%);
+    }
+
 }
 
-/* SISTEM MENU UTAMA */
+
+/* =========================================================
+   TOP MENU
+========================================================= */
+
 .menu-container{
+
     display:flex;
-    gap:12px;
-    margin-top:55px;
-    flex-wrap:wrap;
+
     justify-content:center;
+
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+    margin-top:45px;
+
+    padding:
+        10px
+        0
+        5px;
 }
 
-.btn-wrapper {
-    position: relative;
-    display: inline-block;
+
+/* =========================================================
+   BUTTON WRAPPER
+========================================================= */
+
+.btn-wrapper{
+
+    position:relative;
+
+    display:inline-block;
 }
+
+
+/* =========================================================
+   HOVER LOGO
+========================================================= */
+
+.hover-logo{
+
+    position:absolute;
+
+    top:-52px;
+
+    left:50%;
+
+    transform:
+        translateX(-50%)
+        translateY(12px);
+
+    height:45px;
+
+    width:auto;
+
+    opacity:0;
+
+    visibility:hidden;
+
+    pointer-events:none;
+
+    transition:.25s ease;
+
+    filter:
+        drop-shadow(
+            0 0 8px
+            rgba(0,234,255,.65)
+        )
+        drop-shadow(
+            0 0 20px
+            rgba(0,234,255,.3)
+        );
+}
+
+
+.btn-wrapper:hover .hover-logo{
+
+    opacity:1;
+
+    visibility:visible;
+
+    transform:
+        translateX(-50%)
+        translateY(0);
+}
+
+
+/* =========================================================
+   MENU BUTTON
+========================================================= */
 
 .btn-menu{
-    width: 100%;
-    padding:16px 32px;
-    border-radius:12px;
-    border:1px solid rgba(255, 59, 92, 0.25);
-    background:rgba(0,0,0,0.4);
-    color:white;
-    font-weight:800;
-    transition: all 0.25s ease;
-    font-size:0.9rem;
-    min-width:160px;
+
+    position:relative;
+
+    display:inline-block;
+
+    min-width:150px;
+
+    padding:
+        14px
+        28px;
+
+    border-radius:10px;
+
+    border:
+        1px solid
+        rgba(0,234,255,.25);
+
+    background:
+        rgba(0,0,0,.45);
+
+    color:#dfffff;
+
+    text-decoration:none;
+
     text-align:center;
-    letter-spacing:0.5px;
-    text-decoration: none;
-    display: inline-block;
+
+    font-family:
+        "Barlow Condensed",
+        sans-serif;
+
+    font-size:15px;
+
+    font-weight:900;
+
+    letter-spacing:1px;
+
+    transition:.25s;
+
+    overflow:hidden;
 }
 
-.hover-logo {
-    position: absolute;
-    top: -52px;
-    left: 50%;
-    transform: translateX(-50%) translateY(12px);
-    height: 45px;
-    width: auto;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: all 0.25s ease;
+
+/* =========================================================
+   BUTTON LIGHT
+========================================================= */
+
+.btn-menu::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:-120%;
+
+    width:80%;
+
+    height:100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.12),
+            transparent
+        );
+
+    transform:skewX(-20deg);
+
+    transition:.5s;
 }
 
-.btn-wrapper:hover .hover-logo {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(-50%) translateY(0);
+
+.btn-menu:hover::before{
+
+    left:140%;
 }
 
-.btn-wrapper:hover .btn-menu, .btn-menu.active{
-    background: linear-gradient(135deg, #a80027, #ff3b5c);
-    color: #ffffff;
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 -15px 25px rgba(255, 59, 92, 0.6);
-    border-color: rgba(255, 92, 124, 0.8);
+
+/* =========================================================
+   BUTTON HOVER / ACTIVE
+========================================================= */
+
+.btn-wrapper:hover .btn-menu,
+.btn-menu.active{
+
+    color:#fff;
+
+    border-style:solid;
+
+    border-color:#00eaff;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,170,195,.85),
+            rgba(0,80,140,.8)
+        );
+
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        0 0 12px
+        rgba(0,234,255,.3),
+
+        0 0 25px
+        rgba(0,234,255,.1);
+
+    text-shadow:
+        0 0 8px
+        rgba(255,255,255,.7);
 }
+
+
+/* =========================================================
+   ACTIVE BCA
+========================================================= */
+
+.btn-menu.active{
+
+    background:
+        linear-gradient(
+            135deg,
+            #00a8c0,
+            #006bff
+        );
+
+    box-shadow:
+        0 0 15px
+        rgba(0,234,255,.35),
+
+        inset 0 0 15px
+        rgba(255,255,255,.08);
+}
+
+
+/* =========================================================
+   SEPARATOR
+========================================================= */
+
+.divider{
+
+    position:relative;
+
+    z-index:5;
+
+    width:100%;
+
+    height:1px;
+
+    margin-top:35px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(0,234,255,.4),
+            transparent
+        );
+
+    box-shadow:
+        0 0 10px
+        rgba(0,234,255,.2);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1100px){
+
+    body{
+        padding:15px;
+    }
+
+    .glass-panel{
+        padding:18px;
+    }
+
+    .btn-menu{
+
+        min-width:105px;
+
+        padding:
+            12px
+            14px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:700px){
+
+    .top-row{
+
+        flex-direction:column;
+
+        align-items:stretch;
+    }
+
+    .back-links{
+
+        justify-content:center;
+    }
+
+    #live-time{
+
+        text-align:center;
+
+        font-size:9px;
+    }
+
+    .menu-container{
+
+        gap:7px;
+
+        margin-top:35px;
+    }
+
+    .btn-menu{
+
+        min-width:95px;
+
+        padding:
+            10px
+            12px;
+
+        font-size:13px;
+    }
+
+    .ticker span{
+
+        font-size:12px;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media(max-width:430px){
+
+    body{
+        padding:8px;
+    }
+
+    .glass-panel{
+
+        padding:14px;
+
+        border-radius:16px;
+    }
+
+    .menu-container{
+
+        display:grid;
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+        width:100%;
+    }
+
+    .btn-wrapper{
+
+        width:100%;
+    }
+
+    .btn-menu{
+
+        width:100%;
+
+        min-width:0;
+
+        font-size:12px;
+
+        padding:
+            11px
+            5px;
+    }
+
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar{
+
+    width:8px;
+    height:8px;
+}
+
+
+::-webkit-scrollbar-track{
+
+    background:#020405;
+}
+
+
+::-webkit-scrollbar-thumb{
+
+    background:
+        linear-gradient(
+            #00eaff,
+            #006bff
+        );
+
+    border-radius:20px;
+
+    box-shadow:
+        0 0 8px
+        rgba(0,234,255,.5);
+}
+
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#fff;
+}
+
 </style>
+
 </head>
+
 
 <body>
 
-<div class="glass-panel">
-    <!-- Video Background -->
-    <video autoplay loop muted playsinline class="bg-video-panel">
-        <source src="video_616eeacb5c57.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
 
-    <div class="top-row">
-        <!-- Tombol Back di Pojok Kiri Atas -->
-        <div class="back-links">
-            <a href="index.html" class="btn-back">← BACK</a>
-        </div>
-        <div id="live-time">Loading...</div>
-    </div>
+<!-- =======================================================
+     PARTICLES
+======================================================= -->
 
-    <div class="ticker">
-        <span>Sistem Pengelolaan Rekening Khusus BCA, BNI, BNI WONDER, dan MANDIRI. Pastikan data yang dimasukkan sudah benar.</span>
-    </div>
+<div class="stars">
 
-    <!-- 4 Menu Utama -->
-    <div class="menu-container">
-        <div class="btn-wrapper">
-            <img src="ayutogellogo1.png" class="hover-logo" alt="Hover Logo" onerror="this.style.display='none'">
-            <a href="bca.html" class="btn-menu active" id="nav-bca">BCA</a>
-        </div>
-        
-        <div class="btn-wrapper">
-            <img src="ayutogellogo1.png" class="hover-logo" alt="Hover Logo" onerror="this.style.display='none'">
-            <a href="bni.html" class="btn-menu" id="nav-bni">BNI</a>
-        </div>
-        
-        <div class="btn-wrapper">
-            <img src="ayutogellogo1.png" class="hover-logo" alt="Hover Logo" onerror="this.style.display='none'">
-            <a href="bniwonder.html" class="btn-menu" id="nav-bni-wonder">BNI WONDER</a>
-        </div>
-        
-        <div class="btn-wrapper">
-            <img src="ayutogellogo1.png" class="hover-logo" alt="Hover Logo" onerror="this.style.display='none'">
-            <a href="mandiri.html" class="btn-menu" id="nav-mandiri">MANDIRI</a>
-        </div>
-    </div>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
 
 </div>
 
-<script>
-/* ================== JAM DIGITAL ================== */
-function updateClock(){
-    const now=new Date();
-    const hari=["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
-    const bulan=["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
 
-    document.getElementById("live-time").innerText =
-        hari[now.getDay()]+", "+ now.getDate()+" "+bulan[now.getMonth()]+" "+now.getFullYear()+" - "+
-        String(now.getHours()).padStart(2,'0')+":"+String(now.getMinutes()).padStart(2,'0')+":"+String(now.getSeconds()).padStart(2,'0');
+<!-- =======================================================
+     MAIN PANEL
+======================================================= -->
+
+<div class="glass-panel">
+
+
+    <!-- VIDEO BACKGROUND -->
+
+    <video
+        autoplay
+        loop
+        muted
+        playsinline
+        class="bg-video-panel"
+    >
+
+        <source
+            src="video_616eeacb5c57.mp4"
+            type="video/mp4"
+        >
+
+    </video>
+
+
+    <!-- ===================================================
+         HEADER
+    ==================================================== -->
+
+    <div class="top-row">
+
+
+        <!-- BACK -->
+
+        <div class="back-links">
+
+            <a
+                href="index.html"
+                class="btn-back"
+            >
+                ← BACK
+            </a>
+
+        </div>
+
+
+        <!-- CLOCK -->
+
+        <div id="live-time">
+            Loading...
+        </div>
+
+
+    </div>
+
+
+    <!-- ===================================================
+         TICKER
+    ==================================================== -->
+
+    <div class="ticker">
+
+        <span>
+            SISTEM PENGELOLAAN REKENING KHUSUS
+            BCA, BNI, BNI WONDER, DAN MANDIRI.
+            PASTIKAN DATA YANG DIMASUKKAN SUDAH BENAR.
+        </span>
+
+    </div>
+
+
+    <!-- ===================================================
+         MENU
+    ==================================================== -->
+
+    <div class="menu-container">
+
+
+        <!-- BCA -->
+
+        <div class="btn-wrapper">
+
+            <img
+                src="ayutogellogo1.png"
+                class="hover-logo"
+                alt="Logo"
+                onerror="this.style.display='none'"
+            >
+
+            <a
+                href="bca.html"
+                class="btn-menu active"
+                id="nav-bca"
+            >
+                BCA
+            </a>
+
+        </div>
+
+
+        <!-- BNI -->
+
+        <div class="btn-wrapper">
+
+            <img
+                src="ayutogellogo1.png"
+                class="hover-logo"
+                alt="Logo"
+                onerror="this.style.display='none'"
+            >
+
+            <a
+                href="bni.html"
+                class="btn-menu"
+                id="nav-bni"
+            >
+                BNI
+            </a>
+
+        </div>
+
+
+        <!-- BNI WONDER -->
+
+        <div class="btn-wrapper">
+
+            <img
+                src="ayutogellogo1.png"
+                class="hover-logo"
+                alt="Logo"
+                onerror="this.style.display='none'"
+            >
+
+            <a
+                href="bniwonder.html"
+                class="btn-menu"
+                id="nav-bni-wonder"
+            >
+                BNI WONDER
+            </a>
+
+        </div>
+
+
+        <!-- MANDIRI -->
+
+        <div class="btn-wrapper">
+
+            <img
+                src="ayutogellogo1.png"
+                class="hover-logo"
+                alt="Logo"
+                onerror="this.style.display='none'"
+            >
+
+            <a
+                href="mandiri.html"
+                class="btn-menu"
+                id="nav-mandiri"
+            >
+                MANDIRI
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- DIVIDER -->
+
+    <div class="divider"></div>
+
+
+</div>
+
+
+<!-- =======================================================
+     CLOCK SCRIPT
+======================================================= -->
+
+<script>
+
+function updateClock(){
+
+    const now = new Date();
+
+    const hari = [
+        "Minggu",
+        "Senin",
+        "Selasa",
+        "Rabu",
+        "Kamis",
+        "Jumat",
+        "Sabtu"
+    ];
+
+    const bulan = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "Mei",
+        "Jun",
+        "Jul",
+        "Agu",
+        "Sep",
+        "Okt",
+        "Nov",
+        "Des"
+    ];
+
+
+    const tanggal =
+        now.getDate();
+
+
+    const tahun =
+        now.getFullYear();
+
+
+    const jam =
+        String(
+            now.getHours()
+        ).padStart(2,"0");
+
+
+    const menit =
+        String(
+            now.getMinutes()
+        ).padStart(2,"0");
+
+
+    const detik =
+        String(
+            now.getSeconds()
+        ).padStart(2,"0");
+
+
+    document
+        .getElementById("live-time")
+        .innerText =
+
+        hari[now.getDay()]
+        + ", "
+        + tanggal
+        + " "
+        + bulan[now.getMonth()]
+        + " "
+        + tahun
+        + " - "
+        + jam
+        + ":"
+        + menit
+        + ":"
+        + detik;
+
 }
-setInterval(updateClock,1000);
+
+
 updateClock();
+
+setInterval(
+    updateClock,
+    1000
+);
+
 </script>
+
+
 </body>
 </html>
