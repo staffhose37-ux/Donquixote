@@ -3575,33 +3575,7 @@ function resetKpiUpload(){
 }
 
 
-/* =========================================================
-   CTRL + U REDIRECT
-========================================================= */
-
-window.addEventListener(
-    'keydown',
-    function(e){
-
-        if(
-            (e.ctrlKey || e.metaKey) &&
-            e.key.toLowerCase()==='u'
-        ){
-
-            e.preventDefault();
-
-            sessionStorage.setItem(
-                'returnFromHaha',
-                'true'
-            );
-
-            window.location.href=
-                'haha.jpg';
-
-        }
-
-    }
-);
+/* ========================================================= CTRL + U REDIRECT ========================================================= */ window.addEventListener( 'keydown', function(e){ if( (e.ctrlKey || e.metaKey) && e.key.toLowerCase()==='u' ){ e.preventDefault(); window.location.href = 'haha.html'; } } );
 
 </script>
 
