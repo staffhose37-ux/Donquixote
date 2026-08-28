@@ -1,0 +1,1877 @@
+<!DOCTYPE html>
+
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Pengaturan & Download Transaksi Pemain</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<style>
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+
+/* =========================================================
+   BODY
+========================================================= */
+
+body {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 100vh;
+
+    padding: 30px 20px;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(255,255,255,0.08),
+            transparent 32%
+        ),
+        radial-gradient(
+            circle at 5% 55%,
+            rgba(0,210,255,0.07),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 95% 65%,
+            rgba(80,80,255,0.07),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #080b0f,
+            #05070b 55%,
+            #080a10
+        );
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    color: #ffffff;
+
+    overflow-x: hidden;
+}
+
+
+/* =========================================================
+   BACKGROUND MOVING LIGHT
+========================================================= */
+
+body::before {
+    content: "";
+
+    position: fixed;
+
+    top: -100%;
+    left: -100%;
+
+    width: 300%;
+    height: 300%;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            115deg,
+            transparent 46%,
+            rgba(0,210,255,0.025) 48%,
+            rgba(0,210,255,0.08) 50%,
+            rgba(255,255,255,0.035) 51%,
+            transparent 54%
+        );
+
+    animation: backgroundSweep 12s linear infinite;
+
+    z-index: 0;
+}
+
+@keyframes backgroundSweep {
+
+    0% {
+        transform: translate(-8%, -8%) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(8%, 8%) rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   BACKGROUND LIGHT SPOTS
+========================================================= */
+
+.light-dot {
+    position: fixed;
+
+    width: 4px;
+    height: 4px;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 6px rgba(255,255,255,0.9),
+        0 0 15px rgba(0,210,255,0.75);
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+.dot1 {
+    top: 15%;
+    left: 9%;
+
+    animation: dotFloat1 5s ease-in-out infinite;
+}
+
+.dot2 {
+    top: 72%;
+    right: 10%;
+
+    animation: dotFloat2 7s ease-in-out infinite;
+}
+
+.dot3 {
+    top: 29%;
+    right: 17%;
+
+    animation: dotFloat3 6s ease-in-out infinite;
+}
+
+@keyframes dotFloat1 {
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+        opacity: 0.25;
+    }
+
+    50% {
+        transform: translate(20px, -25px);
+        opacity: 0.8;
+    }
+}
+
+@keyframes dotFloat2 {
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+        opacity: 0.25;
+    }
+
+    50% {
+        transform: translate(-25px, 20px);
+        opacity: 0.8;
+    }
+}
+
+@keyframes dotFloat3 {
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+        opacity: 0.2;
+    }
+
+    50% {
+        transform: translate(-15px, 25px);
+        opacity: 0.7;
+    }
+}
+
+
+/* =========================================================
+   CONTENT Z-INDEX
+========================================================= */
+
+.control-panel,
+.transaction-wrap {
+    position: relative;
+    z-index: 2;
+}
+
+
+/* =========================================================
+   CONTROL PANEL
+========================================================= */
+
+.control-panel {
+
+    position: relative;
+
+    width: 698px;
+    max-width: 100%;
+
+    padding: 20px;
+
+    margin-bottom: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.09),
+            rgba(255,255,255,0.025)
+        );
+
+    border: 1px solid rgba(255,255,255,0.17);
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 18px 50px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   TOP MOVING LIGHT CONTROL PANEL
+========================================================= */
+
+.control-panel::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -120%;
+
+    width: 80%;
+    height: 2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #ffffff,
+            #00d9ff,
+            #ffffff,
+            transparent
+        );
+
+    box-shadow:
+        0 0 8px #00d9ff,
+        0 0 20px rgba(0,217,255,0.7);
+
+    animation: panelLight 4s linear infinite;
+
+    pointer-events: none;
+}
+
+@keyframes panelLight {
+
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 130%;
+    }
+}
+
+
+/* =========================================================
+   PANEL BOTTOM LIGHT
+========================================================= */
+
+.control-panel::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 10%;
+    bottom: 0;
+
+    width: 80%;
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(0,217,255,0.75),
+            transparent
+        );
+
+    box-shadow:
+        0 0 12px rgba(0,217,255,0.6);
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.back-button {
+
+    position: relative;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    margin-bottom: 16px;
+
+    padding: 8px 14px;
+
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.7px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,0.10),
+            rgba(0,217,255,0.08)
+        );
+
+    border:
+        1px solid rgba(255,255,255,0.18);
+
+    border-radius: 7px;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,0.25);
+
+    overflow: hidden;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+/* BACK BUTTON SHINE */
+
+.back-button::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -120%;
+
+    width: 65%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,0.28),
+            transparent
+        );
+
+    transform: skewX(-20deg);
+
+    transition:
+        left 0.5s ease;
+}
+
+.back-button:hover::before {
+    left: 140%;
+}
+
+.back-button:hover {
+
+    transform:
+        translateY(-2px);
+
+    border-color:
+        rgba(0,217,255,0.65);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,217,255,0.15),
+            rgba(255,255,255,0.08)
+        );
+
+    box-shadow:
+        0 6px 20px rgba(0,217,255,0.22),
+        0 0 14px rgba(0,217,255,0.12);
+}
+
+.back-button:active {
+
+    transform:
+        translateY(0);
+}
+
+
+/* =========================================================
+   PANEL TITLE
+========================================================= */
+
+.control-panel h3 {
+
+    position: relative;
+
+    margin: 0 0 20px;
+
+    padding-bottom: 13px;
+
+    font-size: 17px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.3px;
+
+    color: #ffffff;
+
+    text-shadow:
+        0 0 8px rgba(255,255,255,0.25);
+}
+
+.control-panel h3::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    bottom: 0;
+
+    width: 55px;
+    height: 2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #ffffff,
+            #00d9ff,
+            transparent
+        );
+
+    box-shadow:
+        0 0 8px rgba(0,217,255,0.8);
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form-group {
+
+    margin-bottom: 12px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+
+    margin-bottom: 5px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    color: rgba(255,255,255,0.66);
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.7px;
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+.form-group input {
+
+    width: 100%;
+
+    padding: 9px 11px;
+
+    font-size: 13px;
+
+    color: #ffffff;
+
+    background:
+        rgba(0,0,0,0.40);
+
+    border:
+        1px solid rgba(255,255,255,0.15);
+
+    border-radius: 7px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.form-group input:hover {
+
+    background:
+        rgba(0,0,0,0.50);
+
+    border-color:
+        rgba(255,255,255,0.25);
+}
+
+.form-group input:focus {
+
+    background:
+        rgba(0,0,0,0.55);
+
+    border-color:
+        rgba(0,217,255,0.75);
+
+    box-shadow:
+        0 0 0 2px rgba(0,217,255,0.08),
+        0 0 14px rgba(0,217,255,0.20);
+}
+
+.form-group input::selection {
+
+    background:
+        rgba(0,217,255,0.35);
+}
+
+
+/* =========================================================
+   BUTTON AREA
+========================================================= */
+
+.btn-container {
+
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 18px;
+}
+
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.btn-container button {
+
+    position: relative;
+
+    flex: 1;
+
+    padding: 11px 12px;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    color: #ffffff;
+
+    border:
+        1px solid rgba(255,255,255,0.15);
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    overflow: hidden;
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        border-color 0.18s ease;
+}
+
+
+/* BUTTON SHINE */
+
+.btn-container button::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -120%;
+
+    width: 70%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,0.23),
+            transparent
+        );
+
+    transform: skewX(-20deg);
+
+    transition:
+        left 0.5s ease;
+}
+
+.btn-container button:hover::before {
+
+    left: 140%;
+}
+
+.btn-container button:hover {
+
+    transform:
+        translateY(-2px);
+}
+
+.btn-container button:active {
+
+    transform:
+        translateY(0);
+}
+
+
+/* =========================================================
+   DOWNLOAD BUTTON
+========================================================= */
+
+.btn-download {
+
+    background:
+        linear-gradient(
+            135deg,
+            #087d3c,
+            #13b95c
+        );
+
+    box-shadow:
+        0 5px 18px rgba(19,185,92,0.18);
+}
+
+.btn-download:hover {
+
+    border-color:
+        rgba(78,255,157,0.65);
+
+    box-shadow:
+        0 7px 25px rgba(19,185,92,0.35),
+        0 0 15px rgba(19,185,92,0.18);
+}
+
+
+/* =========================================================
+   COPY BUTTON
+========================================================= */
+
+.btn-copy {
+
+    background:
+        linear-gradient(
+            135deg,
+            #075bb5,
+            #168cff
+        );
+
+    box-shadow:
+        0 5px 18px rgba(22,140,255,0.18);
+}
+
+.btn-copy:hover {
+
+    border-color:
+        rgba(74,178,255,0.75);
+
+    box-shadow:
+        0 7px 25px rgba(22,140,255,0.35),
+        0 0 15px rgba(22,140,255,0.18);
+}
+
+
+/* =========================================================
+   NOTIFICATION
+========================================================= */
+
+#notif {
+
+    min-height: 20px;
+
+    margin-top: 12px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    text-align: center;
+
+    letter-spacing: 0.2px;
+}
+
+
+/* =========================================================
+   TRANSACTION WRAPPER
+========================================================= */
+
+.transaction-wrap {
+
+    position: relative;
+
+    width: 698px;
+    max-width: 100%;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    isolation: isolate;
+}
+
+
+/* =========================================================
+   TRANSACTION GLOW
+========================================================= */
+
+.transaction-glow {
+
+    position: absolute;
+
+    left: 3%;
+    right: 3%;
+
+    top: 8px;
+    bottom: 8px;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,210,255,0),
+            rgba(0,210,255,0.15),
+            rgba(255,255,255,0.09),
+            rgba(0,210,255,0.15),
+            rgba(0,210,255,0)
+        );
+
+    filter: blur(18px);
+
+    opacity: 0.9;
+
+    z-index: -2;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   LEFT / RIGHT SOFT TRANSITION
+========================================================= */
+
+.transaction-wrap::before {
+
+    content: "";
+
+    position: absolute;
+
+    left: -14px;
+    right: -14px;
+
+    top: -8px;
+    bottom: -8px;
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            90deg,
+
+            rgba(0,217,255,0.00) 0%,
+
+            rgba(0,217,255,0.08) 5%,
+
+            rgba(255,255,255,0.05) 9%,
+
+            rgba(0,217,255,0.00) 17%,
+
+            rgba(0,217,255,0.00) 83%,
+
+            rgba(0,217,255,0.06) 91%,
+
+            rgba(0,217,255,0.09) 95%,
+
+            rgba(0,217,255,0.00) 100%
+        );
+
+    filter: blur(7px);
+
+    z-index: -1;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   MOVING LIGHT AROUND TRANSACTION
+========================================================= */
+
+.transaction-wrap::after {
+
+    content: "";
+
+    position: absolute;
+
+    top: -2px;
+    bottom: -2px;
+
+    left: -35%;
+
+    width: 28%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(0,217,255,0.20),
+            rgba(255,255,255,0.18),
+            rgba(0,217,255,0.20),
+            transparent
+        );
+
+    filter: blur(7px);
+
+    opacity: 0.8;
+
+    pointer-events: none;
+
+    z-index: 3;
+
+    animation:
+        transactionLight 4.8s linear infinite;
+}
+
+@keyframes transactionLight {
+
+    0% {
+        left: -35%;
+    }
+
+    100% {
+        left: 110%;
+    }
+}
+
+
+/* =========================================================
+   TRANSACTION BOX
+   TIDAK DIBERI EFEK VISUAL
+   AGAR HASIL DOWNLOAD TETAP ORIGINAL
+========================================================= */
+
+.box {
+
+    position: relative;
+
+    width: 698px;
+    height: 128px;
+
+    background: #ffffff;
+
+    border: 1px solid #000000;
+
+    overflow: hidden;
+
+    padding: 3px;
+
+    display: block;
+
+    z-index: 4;
+}
+
+
+/* =========================================================
+   TRANSACTION TABLE
+========================================================= */
+
+.fixed-table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+.fixed-table td {
+
+    border:
+        1px solid #ffffff;
+
+    padding:
+        2px 4px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 730px) {
+
+    body {
+
+        justify-content: flex-start;
+
+        padding:
+            20px 10px;
+    }
+
+    .control-panel {
+
+        width:
+            calc(100% - 10px);
+
+        padding:
+            16px;
+    }
+
+    .transaction-wrap {
+
+        width:
+            calc(100% - 10px);
+    }
+
+    .box {
+
+        width: 698px;
+
+        flex-shrink: 0;
+    }
+
+    .transaction-wrap {
+
+        overflow-x: auto;
+
+        justify-content: flex-start;
+    }
+
+    .btn-container {
+
+        flex-direction: column;
+    }
+
+    .btn-container button {
+
+        width: 100%;
+    }
+}
+
+
+/* =========================================================
+   REDUCE MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    body::before,
+    .control-panel::before,
+    .transaction-wrap::after,
+    .dot1,
+    .dot2,
+    .dot3 {
+
+        animation: none;
+    }
+
+    .btn-container button,
+    .back-button {
+
+        transition: none;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- =====================================================
+     BACKGROUND DECORATION
+===================================================== -->
+
+<div class="light-dot dot1"></div>
+<div class="light-dot dot2"></div>
+<div class="light-dot dot3"></div>
+
+<!-- =====================================================
+     CONTROL PANEL
+===================================================== -->
+
+<div class="control-panel">
+
+```
+<!-- =================================================
+     BACK MENU
+     MENGARAH KE gabungan.html
+================================================== -->
+
+<a
+    href="gabungan.html"
+    class="back-button"
+    title="Kembali ke Gabungan"
+>
+    <span>←</span>
+    <span>BACK</span>
+</a>
+
+
+<h3>
+    Panel Pengaturan Data &amp; Aksi
+</h3>
+
+
+<!-- NAMA PEMAIN -->
+
+<div class="form-group">
+
+    <label for="inputNama">
+        Nama Pemain:
+    </label>
+
+    <input
+        type="text"
+        id="inputNama"
+        value="akubatman"
+        oninput="updateData()"
+    >
+
+</div>
+
+
+<!-- TANGGAL WITHDRAW -->
+
+<div class="form-group">
+
+    <label for="inputTanggal">
+        Tanggal Tarik Dana (Withdraw):
+    </label>
+
+    <input
+        type="text"
+        id="inputTanggal"
+        value="2026-08-26 19:13:52"
+        oninput="updateData()"
+    >
+
+</div>
+
+
+<!-- TANGGAL DEPOSIT -->
+
+<div class="form-group">
+
+    <label for="inputTanggalDepo">
+        Tanggal Deposit:
+    </label>
+
+    <input
+        type="text"
+        id="inputTanggalDepo"
+        value="2026-08-26 17:54:11"
+        oninput="updateData()"
+    >
+
+</div>
+
+
+<!-- DEBET -->
+
+<div class="form-group">
+
+    <label for="inputDebet">
+        Nominal Debet:
+    </label>
+
+    <input
+        type="text"
+        id="inputDebet"
+        value="2,400,000"
+        oninput="updateData()"
+    >
+
+</div>
+
+
+<!-- KREDIT -->
+
+<div class="form-group">
+
+    <label for="inputKredit">
+        Nominal Kredit:
+    </label>
+
+    <input
+        type="text"
+        id="inputKredit"
+        value="500,947"
+        oninput="updateData()"
+    >
+
+</div>
+
+
+<!-- BUTTON -->
+
+<div class="btn-container">
+
+    <button
+        class="btn-download"
+        onclick="downloadImage()"
+    >
+        Download Gambar (PNG)
+    </button>
+
+
+    <button
+        class="btn-copy"
+        onclick="copyImage()"
+    >
+        Salin Gambar ke Clipboard
+    </button>
+
+</div>
+
+
+<!-- NOTIFICATION -->
+
+<div id="notif"></div>
+```
+
+</div>
+
+<!-- =====================================================
+     TRANSACTION AREA
+
+     WRAPPER INI HANYA UNTUK EFEK VISUAL.
+     captureBox TETAP BERSIH.
+===================================================== -->
+
+<div class="transaction-wrap">
+
+```
+<div class="transaction-glow"></div>
+
+
+<!-- =================================================
+     CAPTURE BOX
+     TAMPILAN TRANSAKSI ASLI
+================================================== -->
+
+<div class="box" id="captureBox">
+
+    <div align="center">
+
+        <font
+            color="#0000CC"
+            size="2.5"
+        >
+
+            <b>
+
+
+                <!-- IKON KIRI -->
+
+                <img
+                    src="aku.png"
+                    width="12"
+                    height="12"
+                    border="0"
+                    style="vertical-align: middle;"
+                >
+
+
+                Transaksi&nbsp;&nbsp;Pemain&nbsp;:&nbsp;
+
+
+                <span id="displayNama">
+                    akubatman
+                </span>
+
+
+                &nbsp;
+
+
+                <!-- IKON KANAN -->
+
+                <a
+                    href="javascript:popUp('depo_user_det.php?user=akubatman')"
+                    style="text-decoration:none"
+                    id="linkPopup"
+                >
+
+                    <img
+                        src="kamu.png"
+                        width="10"
+                        height="10"
+                        border="0"
+                        style="vertical-align: middle;"
+                    >
+
+                </a>
+
+
+            </b>
+
+        </font>
+
+
+
+        <!-- =================================================
+             TABLE TRANSAKSI
+        ================================================== -->
+
+        <table class="fixed-table">
+
+
+            <!-- HEADER -->
+
+            <tr bgcolor="#F5E363">
+
+                <td align="center">
+
+                    <font
+                        size="2"
+                        color="#000000"
+                        face="verdana"
+                    >
+
+                        <b>
+                            Tanggal
+                        </b>
+
+                    </font>
+
+                </td>
+
+
+                <td align="center">
+
+                    <font
+                        size="2"
+                        color="#000000"
+                        face="verdana"
+                    >
+
+                        <b>
+                            Keterangan
+                        </b>
+
+                    </font>
+
+                </td>
+
+
+                <td align="center">
+
+                    <font
+                        size="2"
+                        color="#000000"
+                        face="verdana"
+                    >
+
+                        <b>
+                            Status
+                        </b>
+
+                    </font>
+
+                </td>
+
+
+                <td align="center">
+
+                    <font
+                        size="2"
+                        color="#000000"
+                        face="verdana"
+                    >
+
+                        <b>
+                            Debet
+                        </b>
+
+                    </font>
+
+                </td>
+
+
+                <td align="center">
+
+                    <font
+                        size="2"
+                        color="#000000"
+                        face="verdana"
+                    >
+
+                        <b>
+                            Kredit
+                        </b>
+
+                    </font>
+
+                </td>
+
+            </tr>
+
+
+
+            <!-- LAST BALANCE -->
+
+            <tr bgcolor="#FFDBB7">
+
+                <td
+                    align="center"
+                    colspan="3"
+                >
+
+                    <font
+                        size="2"
+                        color="#000000"
+                        face="verdana"
+                    >
+
+                        <b>
+                            &nbsp;
+                        </b>
+
+                    </font>
+
+                </td>
+
+
+                <td
+                    align="center"
+                    colspan="2"
+                >
+
+                    <font
+                        size="2"
+                        color="#000000"
+                        face="verdana"
+                    >
+
+                        <b>
+                            Last Balance
+                        </b>
+
+                    </font>
+
+                </td>
+
+            </tr>
+
+
+
+            <!-- WITHDRAW -->
+
+            <tr bgcolor="#EFEFEF">
+
+                <td align="center">
+
+                    <font
+                        size="2"
+                        color="#000000"
+                        face="verdana"
+                    >
+
+                        <span id="displayTanggal1">
+                            2026-08-26 19:13:52
+                        </span>
+
+                    </font>
+
+                </td>
+
+
+                <td align="center">
+
+                    <font
+                        size="2"
+                        color="#000000"
+                        face="verdana"
+                    >
+
+                        Tarik Dana
+
+                    </font>
+
+                </td>
+
+
+                <td align="center">
+
+                    <font
+                        size="2"
+                        color="red"
+                        face="verdana"
+                    >
+
+                        Withdraw
+
+                    </font>
+
+                </td>
+
+
+                <td align="center">
+
+                    <font
+                        size="2"
+                        color="#000000"
+                        face="verdana"
+                    >
+
+                        <span id="displayDebet">
+                            2,400,000
+                        </span>
+
+                    </font>
+
+                </td>
+
+
+                <td align="center">
+
+                    <font
+                        size="2"
+                        color="#0000FF"
+                        face="verdana"
+                    >
+
+                        0
+
+                    </font>
+
+                </td>
+
+            </tr>
+
+
+
+            <!-- DEPOSIT -->
+
+            <tr bgcolor="#FFDBB7">
+
+                <td align="center">
+
+                    <font
+                        size="2"
+                        color="#000000"
+                        face="verdana"
+                    >
+
+                        <span id="displayTanggalDepo">
+                            2026-08-26 17:54:11
+                        </span>
+
+                    </font>
+
+                </td>
+
+
+                <td align="center">
+
+                    <font
+                        size="2"
+                        color="#000000"
+                        face="verdana"
+                    >
+
+                        Deposit PGA
+
+                    </font>
+
+                </td>
+
+
+                <td align="center">
+
+                    <font
+                        size="2"
+                        color="red"
+                        face="verdana"
+                    >
+
+                        Deposit
+
+                    </font>
+
+                </td>
+
+
+                <td align="center">
+
+                    <font
+                        size="2"
+                        color="#000000"
+                        face="verdana"
+                    >
+
+                        0
+
+                    </font>
+
+                </td>
+
+
+                <td align="center">
+
+                    <font
+                        size="2"
+                        color="#0000FF"
+                        face="verdana"
+                    >
+
+                        <span id="displayKredit">
+                            500,947
+                        </span>
+
+                    </font>
+
+                </td>
+
+            </tr>
+
+
+        </table>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+
+/* =========================================================
+   UPDATE DATA
+========================================================= */
+
+function updateData() {
+
+    let nama =
+        document.getElementById('inputNama').value;
+
+    let tanggal =
+        document.getElementById('inputTanggal').value;
+
+    let tanggalDepo =
+        document.getElementById('inputTanggalDepo').value;
+
+    let debet =
+        document.getElementById('inputDebet').value;
+
+    let kredit =
+        document.getElementById('inputKredit').value;
+
+
+    /* Nama */
+
+    document.getElementById(
+        'displayNama'
+    ).innerText = nama;
+
+
+    /* Tanggal Withdraw */
+
+    document.getElementById(
+        'displayTanggal1'
+    ).innerText = tanggal;
+
+
+    /* Tanggal Deposit */
+
+    document.getElementById(
+        'displayTanggalDepo'
+    ).innerText = tanggalDepo;
+
+
+    /* Debet */
+
+    document.getElementById(
+        'displayDebet'
+    ).innerText = debet;
+
+
+    /* Kredit */
+
+    document.getElementById(
+        'displayKredit'
+    ).innerText = kredit;
+
+
+    /* Popup */
+
+    document.getElementById(
+        'linkPopup'
+    ).href =
+        "javascript:popUp('depo_user_det.php?user=" +
+        encodeURIComponent(nama) +
+        "')";
+
+}
+
+
+
+/* =========================================================
+   NOTIFICATION
+========================================================= */
+
+function showNotif(
+    text,
+    isError = false
+) {
+
+    let notif =
+        document.getElementById('notif');
+
+
+    notif.style.color =
+        isError
+            ? "#ff5b5b"
+            : "#55e89a";
+
+
+    notif.innerText =
+        text;
+
+
+    setTimeout(
+        () => {
+
+            notif.innerText = "";
+
+        },
+        4000
+    );
+
+}
+
+
+
+/* =========================================================
+   DOWNLOAD IMAGE
+========================================================= */
+
+function downloadImage() {
+
+    let boxElement =
+        document.getElementById(
+            'captureBox'
+        );
+
+
+    showNotif(
+        "Memproses gambar..."
+    );
+
+
+    html2canvas(
+        boxElement,
+        {
+
+            scale: 2,
+
+            useCORS: true,
+
+            allowTaint: true
+
+        }
+    )
+    .then(
+        canvas => {
+
+            let link =
+                document.createElement(
+                    'a'
+                );
+
+
+            link.download =
+                'transaksi-' +
+                document.getElementById(
+                    'inputNama'
+                ).value +
+                '.png';
+
+
+            link.href =
+                canvas.toDataURL(
+                    'image/png'
+                );
+
+
+            link.click();
+
+
+            showNotif(
+                "Berhasil mendownload gambar!"
+            );
+
+        }
+    )
+    .catch(
+        err => {
+
+            showNotif(
+                "Gagal: Jalankan lewat Local Server (Live Server)",
+                true
+            );
+
+
+            console.error(err);
+
+        }
+    );
+
+}
+
+
+
+/* =========================================================
+   COPY IMAGE
+========================================================= */
+
+function copyImage() {
+
+    let boxElement =
+        document.getElementById(
+            'captureBox'
+        );
+
+
+    showNotif(
+        "Menyalin gambar..."
+    );
+
+
+    html2canvas(
+        boxElement,
+        {
+
+            scale: 2,
+
+            useCORS: true,
+
+            allowTaint: true
+
+        }
+    )
+    .then(
+        canvas => {
+
+            canvas.toBlob(
+                blob => {
+
+                    try {
+
+                        navigator.clipboard.write([
+
+                            new ClipboardItem({
+
+                                'image/png': blob
+
+                            })
+
+                        ]);
+
+
+                        showNotif(
+                            "Berhasil menyalin gambar ke clipboard!"
+                        );
+
+                    }
+
+                    catch (err) {
+
+                        showNotif(
+                            "Gagal menyalin (Gunakan Local Server)",
+                            true
+                        );
+
+
+                        console.error(err);
+
+                    }
+
+                }
+            );
+
+        }
+    )
+    .catch(
+        err => {
+
+            showNotif(
+                "Gagal memproses gambar.",
+                true
+            );
+
+
+            console.error(err);
+
+        }
+    );
+
+}
+
+</script>
+
+</body>
+</html>
