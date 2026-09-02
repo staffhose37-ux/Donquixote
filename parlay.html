@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PARLAY PRO // OPERATIONAL CALCULATOR</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=Orbitron:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --bg:#02070b;
+    --panel:rgba(5,18,25,.82);
+    --panel2:rgba(4,13,19,.92);
+    --cyan:#00eaff;
+    --cyan2:#00a9c7;
+    --blue:#168dff;
+    --green:#00ff9d;
+    --yellow:#ffd84a;
+    --red:#ff4268;
+    --text:#e9fbff;
+    --muted:#7595a0;
+    --line:rgba(0,234,255,.18);
+    --line2:rgba(255,255,255,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+    margin:0;
+    min-height:100vh;
+    overflow-x:hidden;
+    color:var(--text);
+    font-family:"Barlow Condensed",sans-serif;
+    background:
+        radial-gradient(circle at 10% 5%,rgba(0,234,255,.10),transparent 28%),
+        radial-gradient(circle at 90% 90%,rgba(0,120,255,.09),transparent 30%),
+        linear-gradient(135deg,#010406,#031018 48%,#010609);
+}
+body:before{
+    content:"";
+    position:fixed;inset:0;pointer-events:none;z-index:-1;
+    background-image:
+        linear-gradient(rgba(0,234,255,.035) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(0,234,255,.035) 1px,transparent 1px);
+    background-size:38px 38px;
+    mask-image:linear-gradient(to bottom,black,transparent 92%);
+}
+body:after{
+    content:"";
+    position:fixed;
+    width:420px;height:420px;
+    left:-170px;top:-180px;
+    border-radius:50%;
+    background:var(--cyan);
+    filter:blur(150px);
+    opacity:.08;
+    pointer-events:none;
+}
+*{scrollbar-width:thin;scrollbar-color:#087d8d #02080c}
+::-webkit-scrollbar{width:7px}
+::-webkit-scrollbar-track{background:#02080c}
+::-webkit-scrollbar-thumb{background:#087d8d;border-radius:10px}
+
+.shell{width:min(1180px,94%);margin:auto;padding:26px 0 55px}
+
+/* TOP BAR */
+.topbar{
+    min-height:72px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:18px;
+    padding:13px 18px;
+    border:1px solid var(--line);
+    background:rgba(2,12,17,.88);
+    box-shadow:0 0 30px rgba(0,234,255,.06),inset 0 0 25px rgba(0,234,255,.025);
+    position:relative;
+    overflow:hidden;
+}
+.topbar:after,.card:after,.match:after{
+    content:"";
+    position:absolute;
+    top:0;left:-45%;
+    width:30%;height:1px;
+    background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+    box-shadow:0 0 12px var(--cyan);
+    animation:sweep 5s linear infinite;
+}
+.brand{display:flex;align-items:center;gap:13px}
+.brand-logo{
+    width:45px;height:45px;
+    display:grid;place-items:center;
+    border:1px solid var(--cyan);
+    color:var(--cyan);
+    background:rgba(0,234,255,.07);
+    box-shadow:0 0 18px rgba(0,234,255,.16),inset 0 0 15px rgba(0,234,255,.06);
+    font-size:22px;
+}
+.brand-name{
+    font-family:Orbitron,sans-serif;
+    font-size:18px;font-weight:800;
+    letter-spacing:2px;
+}
+.brand-sub{
+    color:var(--muted);
+    font-size:11px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+}
+.status{
+    display:flex;align-items:center;gap:9px;
+    color:#8db5bf;font-size:12px;letter-spacing:1.4px;
+}
+.status-dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 12px var(--green);
+    animation:pulse 1.6s infinite;
+}
+.clock{
+    font-family:Orbitron,sans-serif;
+    color:var(--cyan);
+    font-size:11px;
+    letter-spacing:1px;
+}
+
+/* TICKER */
+.ticker{
+    margin:10px 0 20px;
+    height:30px;
+    overflow:hidden;
+    border:1px solid rgba(0,234,255,.12);
+    background:rgba(0,12,17,.72);
+    display:flex;align-items:center;
+}
+.ticker-label{
+    height:100%;padding:0 14px;
+    display:flex;align-items:center;
+    font-family:Orbitron,sans-serif;
+    font-size:9px;letter-spacing:1.5px;
+    color:#021014;background:var(--cyan);
+    flex:none;
+}
+.ticker-track{
+    white-space:nowrap;
+    animation:ticker 22s linear infinite;
+    padding-left:20px;
+    color:#80aab3;
+    font-size:12px;
+    letter-spacing:1px;
+}
+.ticker-track span{margin-right:55px}
+.ticker-track b{color:var(--cyan)}
+
+/* HERO */
+.hero{
+    text-align:center;
+    padding:28px 10px 24px;
+}
+.kicker{
+    color:var(--cyan);
+    font-family:Orbitron,sans-serif;
+    font-size:10px;
+    letter-spacing:4px;
+    margin-bottom:12px;
+}
+h1{
+    margin:0;
+    font-family:Orbitron,sans-serif;
+    font-size:clamp(28px,6vw,52px);
+    line-height:1.05;
+    letter-spacing:3px;
+    text-shadow:0 0 22px rgba(0,234,255,.22);
+}
+h1 span{color:var(--cyan)}
+.hero p{
+    margin:12px auto 0;
+    max-width:650px;
+    color:#6f929d;
+    font-size:14px;
+    letter-spacing:.7px;
+}
+
+/* LAYOUT */
+.grid{
+    display:grid;
+    grid-template-columns:minmax(0,1.55fr) minmax(320px,.85fr);
+    gap:18px;
+    align-items:start;
+}
+.card{
+    position:relative;
+    overflow:hidden;
+    border:1px solid var(--line);
+    background:linear-gradient(145deg,rgba(5,22,29,.92),rgba(2,10,14,.87));
+    box-shadow:0 18px 50px rgba(0,0,0,.35),inset 0 0 35px rgba(0,234,255,.018);
+    padding:20px;
+    animation:rise .55s ease both;
+}
+.card:before{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background:linear-gradient(120deg,rgba(0,234,255,.025),transparent 35%,rgba(0,234,255,.018));
+}
+.card-head{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:15px;margin-bottom:18px;
+    padding-bottom:13px;
+    border-bottom:1px solid rgba(0,234,255,.10);
+}
+.card-title{
+    display:flex;align-items:center;gap:10px;
+    font-family:Orbitron,sans-serif;
+    font-size:13px;letter-spacing:1.4px;
+}
+.card-icon{
+    width:30px;height:30px;display:grid;place-items:center;
+    color:var(--cyan);
+    border:1px solid rgba(0,234,255,.35);
+    background:rgba(0,234,255,.06);
+    box-shadow:0 0 12px rgba(0,234,255,.08);
+}
+.card-code{
+    color:#466772;font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:1px;
+}
+label{
+    display:block;
+    margin-bottom:6px;
+    color:#6f9aa5;
+    font-family:Orbitron,sans-serif;
+    font-size:9px;
+    letter-spacing:1.4px;
+}
+input,select{
+    width:100%;
+    border:1px solid rgba(0,234,255,.15);
+    outline:none;
+    border-radius:2px;
+    padding:12px 13px;
+    color:#dffaff;
+    background:#020b10;
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:16px;
+    transition:.2s;
+}
+input:focus,select:focus{
+    border-color:var(--cyan);
+    box-shadow:0 0 0 1px rgba(0,234,255,.15),0 0 18px rgba(0,234,255,.08);
+}
+select{cursor:pointer}
+
+/* STAKE */
+.stake-wrap{
+    display:grid;
+    grid-template-columns:1fr 155px;
+    gap:12px;
+    margin-bottom:17px;
+}
+.info-box{
+    border:1px solid rgba(0,234,255,.10);
+    background:rgba(0,234,255,.025);
+    padding:11px 13px;
+}
+.info-box .mini{
+    color:#52727c;font-family:Orbitron,sans-serif;font-size:8px;letter-spacing:1px;
+}
+.info-box strong{display:block;color:var(--cyan);font-family:Orbitron,sans-serif;font-size:13px;margin-top:5px}
+
+/* MATCH */
+.match{
+    position:relative;
+    border:1px solid rgba(0,234,255,.13);
+    background:rgba(1,10,15,.82);
+    padding:15px;
+    margin-bottom:10px;
+    overflow:hidden;
+    animation:matchIn .35s ease both;
+}
+.match:before{
+    content:"";
+    position:absolute;left:0;top:0;bottom:0;width:2px;
+    background:linear-gradient(var(--cyan),transparent,var(--cyan));
+    box-shadow:0 0 10px rgba(0,234,255,.4);
+}
+.match-header{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:13px;
+}
+.match-title{
+    display:flex;align-items:center;
+    color:#cceef4;
+    font-family:Orbitron,sans-serif;
+    font-size:10px;letter-spacing:1px;
+}
+.match-number{
+    width:27px;height:27px;margin-right:9px;
+    display:grid;place-items:center;
+    border:1px solid rgba(0,234,255,.4);
+    color:var(--cyan);
+    background:rgba(0,234,255,.06);
+}
+.match-state{
+    color:#496872;font-size:10px;letter-spacing:1px;
+}
+.match-grid{
+    display:grid;
+    grid-template-columns:1fr 180px;
+    gap:12px;
+}
+
+/* BUTTONS */
+.buttons{
+    display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;
+}
+button{
+    border:1px solid rgba(0,234,255,.3);
+    border-radius:2px;
+    padding:13px 14px;
+    color:#dffaff;
+    background:#031219;
+    font-family:Orbitron,sans-serif;
+    font-size:10px;font-weight:700;
+    letter-spacing:1px;
+    cursor:pointer;
+    transition:.22s;
+}
+button:hover{
+    transform:translateY(-2px);
+    border-color:var(--cyan);
+    color:white;
+    box-shadow:0 0 20px rgba(0,234,255,.12),inset 0 0 15px rgba(0,234,255,.04);
+}
+button:active{transform:translateY(0)}
+.add-btn{color:#83ffd2;border-color:rgba(0,255,157,.28)}
+.remove-btn{color:#ff91aa;border-color:rgba(255,66,104,.25)}
+.calculate-btn{
+    width:100%;margin-top:11px;
+    color:#001014;
+    border-color:var(--cyan);
+    background:linear-gradient(90deg,#00b8d4,var(--cyan));
+    box-shadow:0 0 24px rgba(0,234,255,.15);
+}
+.calculate-btn:hover{color:#001014;box-shadow:0 0 30px rgba(0,234,255,.28)}
+
+/* COUNT */
+.count{
+    text-align:center;
+    margin-top:12px;
+    color:#486872;
+    font-size:11px;
+    letter-spacing:1px;
+}
+.count strong{color:var(--cyan);font-family:Orbitron,sans-serif}
+
+/* RESULT */
+.result-card{position:sticky;top:15px}
+.result-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:9px;
+}
+.result-box{
+    position:relative;
+    min-height:88px;
+    padding:14px;
+    border:1px solid rgba(0,234,255,.11);
+    background:#020b10;
+    overflow:hidden;
+}
+.result-box:after{
+    content:"";
+    position:absolute;right:-30px;bottom:-35px;
+    width:90px;height:90px;border-radius:50%;
+    background:var(--cyan);filter:blur(38px);opacity:.055;
+}
+.result-label{
+    color:#50727c;
+    font-family:Orbitron,sans-serif;
+    font-size:8px;letter-spacing:1.1px;
+    margin-bottom:9px;
+}
+.result-value{
+    font-family:Orbitron,sans-serif;
+    font-size:clamp(14px,2vw,19px);
+    font-weight:700;
+    word-break:break-word;
+}
+.odds-value{color:var(--green);text-shadow:0 0 12px rgba(0,255,157,.15)}
+.payout-value{color:var(--cyan);text-shadow:0 0 12px rgba(0,234,255,.15)}
+.profit-value{color:var(--yellow)}
+.loss-value{color:var(--red)}
+
+.formula{
+    margin-top:12px;
+    padding:15px;
+    border:1px solid rgba(0,234,255,.12);
+    background:linear-gradient(135deg,rgba(0,234,255,.045),rgba(0,80,110,.035));
+    color:#668995;
+    font-size:12px;
+    line-height:1.7;
+}
+.formula strong{color:#d9fbff}
+.formula .formula-title{
+    color:var(--cyan);
+    font-family:Orbitron,sans-serif;
+    font-size:9px;
+    letter-spacing:1.2px;
+}
+
+/* FOOTER */
+.footer{
+    display:flex;justify-content:space-between;gap:15px;
+    margin-top:13px;
+    padding:10px 3px;
+    color:#35545d;
+    font-family:Orbitron,sans-serif;
+    font-size:8px;letter-spacing:1.2px;
+    border-top:1px solid rgba(0,234,255,.08);
+}
+.footer span:last-child{color:#52737d}
+
+/* ANIMATION */
+@keyframes sweep{0%{left:-45%}100%{left:120%}}
+@keyframes pulse{0%,100%{opacity:.45;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}
+@keyframes rise{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:none}}
+@keyframes matchIn{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:none}}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* RESPONSIVE */
+@media(max-width:850px){
+    .grid{grid-template-columns:1fr}
+    .result-card{position:relative;top:auto}
+}
+@media(max-width:600px){
+    .shell{width:94%;padding-top:14px}
+    .topbar{padding:10px 12px}
+    .brand-sub,.clock{display:none}
+    .brand-name{font-size:14px}
+    .hero{padding:22px 4px}
+    h1{letter-spacing:1.5px}
+    .card{padding:15px}
+    .stake-wrap{grid-template-columns:1fr}
+    .match-grid{grid-template-columns:1fr}
+    .buttons{grid-template-columns:1fr}
+    .result-grid{grid-template-columns:1fr 1fr}
+    .result-box{min-height:78px;padding:11px}
+    .result-value{font-size:13px}
+    .footer{flex-direction:column;text-align:center}
+}
+</style>
+</head>
+
+<body>
+<div class="shell">
+
+    <div class="topbar">
+        <div class="brand">
+            <div class="brand-logo">⚽</div>
+            <div>
+                <div class="brand-name">PARLAY PRO</div>
+                <div class="brand-sub">Operational Football Calculator</div>
+            </div>
+        </div>
+        <div class="status"><span class="status-dot"></span> SYSTEM ONLINE</div>
+        <div class="clock" id="clock">00:00:00</div>
+    </div>
+
+    <div class="ticker">
+        <div class="ticker-label">LIVE</div>
+        <div class="ticker-track">
+            <span><b>PARLAY ENGINE</b> // READY FOR CALCULATION</span>
+            <span>HALF WIN // (ODDS + 1) ÷ 2</span>
+            <span><b>STATUS</b> // ALL SYSTEMS NOMINAL</span>
+            <span>PARLAY ENGINE // READY FOR CALCULATION</span>
+        </div>
+    </div>
+
+    <section class="hero">
+        <div class="kicker">ADVANCED BETTING ANALYSIS MODULE</div>
+        <h1>PARLAY <span>PRO</span></h1>
+        <p>Football parlay calculator dengan interface operational dashboard dan perhitungan odds efektif.</p>
+    </section>
+
+    <main class="grid">
+
+        <section class="card">
+            <div class="card-head">
+                <div class="card-title">
+                    <div class="card-icon">₿</div>
+                    DETAIL TARUHAN
+                </div>
+                <div class="card-code">INPUT_MODULE // 01</div>
+            </div>
+
+            <div class="stake-wrap">
+                <div>
+                    <label>MODAL TARUHAN</label>
+                    <input type="text" id="stake" value="100.000" inputmode="numeric" autocomplete="off" oninput="formatStakeInput(this)">
+                </div>
+                <div class="info-box">
+                    <div class="mini">ENGINE STATUS</div>
+                    <strong>CALCULATING</strong>
+                </div>
+            </div>
+
+            <div id="matches"></div>
+
+            <div class="buttons">
+                <button class="add-btn" onclick="addMatch()">＋ TAMBAH PERTANDINGAN</button>
+                <button class="remove-btn" onclick="removeMatch()">− HAPUS PERTANDINGAN</button>
+            </div>
+
+            <div class="count">TOTAL PERTANDINGAN: <strong id="matchCount">1</strong></div>
+
+            <button class="calculate-btn" onclick="calculate()">▣ &nbsp; HITUNG PARLAY</button>
+        </section>
+
+        <aside class="card result-card">
+            <div class="card-head">
+                <div class="card-title">
+                    <div class="card-icon">▦</div>
+                    HASIL PERHITUNGAN
+                </div>
+                <div class="card-code">OUTPUT // 02</div>
+            </div>
+
+            <div class="result-grid">
+                <div class="result-box">
+                    <div class="result-label">TOTAL ODDS EFEKTIF</div>
+                    <div id="totalOdds" class="result-value odds-value">1.0000×</div>
+                </div>
+                <div class="result-box">
+                    <div class="result-label">MODAL</div>
+                    <div id="stakeResult" class="result-value">Rp0</div>
+                </div>
+                <div class="result-box">
+                    <div class="result-label">TOTAL PAYOUT</div>
+                    <div id="payout" class="result-value payout-value">Rp0</div>
+                </div>
+                <div class="result-box">
+                    <div class="result-label">PROFIT BERSIH</div>
+                    <div id="profit" class="result-value profit-value">Rp0</div>
+                </div>
+            </div>
+
+            <div class="formula">
+                <div class="formula-title">⚡ HALF WIN PROTOCOL</div>
+                <br>
+                Jika odds asli = <strong>1.85</strong><br>
+                Half Win = (<strong>1.85 + 1</strong>) ÷ 2 = <strong>1.425</strong>
+                <br><br>
+                Contoh: <strong>6 Win + 1 Half Win</strong><br>
+                1.85⁶ × 1.425 = <strong>41.5095×</strong>
+            </div>
+        </aside>
+
+    </main>
+
+    <div class="footer">
+        <span>PARLAY PRO // FOOTBALL CALCULATOR</span>
+        <span>SECURE LOCAL ENGINE • NO DATA TRANSMISSION</span>
+    </div>
+</div>
+
+<script>
+let matchNumber = 0;
+
+
+/* =========================================
+   TAMBAH PERTANDINGAN
+========================================= */
+
+function addMatch(
+    odds = 1.85,
+    result = "win"
+) {
+
+    matchNumber++;
+
+    const container =
+        document.getElementById("matches");
+
+    const match =
+        document.createElement("div");
+
+    match.className = "match";
+
+    match.innerHTML = `
+
+        <div class="match-header">
+
+            <div class="match-title">
+
+                <span class="match-number">
+                    ${matchNumber}
+                </span>
+
+                Pertandingan ${matchNumber}
+
+            </div>
+
+        </div>
+
+
+        <div class="match-grid">
+
+            <div>
+
+                <label>ODDS</label>
+
+                <input
+                    type="number"
+                    class="odds"
+                    value="${odds}"
+                    min="1"
+                    step="0.01"
+                    oninput="calculate()"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>HASIL</label>
+
+                <select
+                    class="resultSelect"
+                    onchange="calculate()">
+
+                    <option
+                        value="win"
+                        ${result === "win" ? "selected" : ""}>
+                        ✅ Win
+                    </option>
+
+                    <option
+                        value="halfwin"
+                        ${result === "halfwin" ? "selected" : ""}>
+                        🟢 Half Win
+                    </option>
+
+                    <option
+                        value="halfloss"
+                        ${result === "halfloss" ? "selected" : ""}>
+                        🟠 Half Lose
+                    </option>
+
+                    <option
+                        value="void"
+                        ${result === "void" ? "selected" : ""}>
+                        🔄 Void / Push
+                    </option>
+
+                    <option
+                        value="lose"
+                        ${result === "lose" ? "selected" : ""}>
+                        ❌ Lose
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+    `;
+
+    container.appendChild(match);
+
+    updateCount();
+
+    calculate();
+}
+
+
+/* =========================================
+   HAPUS PERTANDINGAN
+========================================= */
+
+function removeMatch() {
+
+    const matches =
+        document.querySelectorAll(".match");
+
+    if (matches.length <= 1) {
+
+        alert(
+            "⚠️ Minimal harus ada 1 pertandingan."
+        );
+
+        return;
+    }
+
+    matches[matches.length - 1].remove();
+
+    matchNumber--;
+
+    updateMatchNumbers();
+
+    updateCount();
+
+    calculate();
+}
+
+
+/* =========================================
+   UPDATE NOMOR
+========================================= */
+
+function updateMatchNumbers() {
+
+    const matches =
+        document.querySelectorAll(".match");
+
+    matches.forEach((match, index) => {
+
+        const number =
+            match.querySelector(".match-number");
+
+        number.textContent =
+            index + 1;
+
+        const title =
+            match.querySelector(".match-title");
+
+        title.innerHTML = `
+            <span class="match-number">
+                ${index + 1}
+            </span>
+            Pertandingan ${index + 1}
+        `;
+
+    });
+
+    matchNumber =
+        matches.length;
+}
+
+
+/* =========================================
+   UPDATE JUMLAH
+========================================= */
+
+function updateCount() {
+
+    const count =
+        document.querySelectorAll(".match").length;
+
+    document.getElementById("matchCount")
+        .textContent = count;
+}
+
+
+/* =========================================
+   HITUNG
+========================================= */
+
+function calculate() {
+
+    const stakeInput = document.getElementById("stake").value;
+    const stake =
+        parseFloat(stakeInput.replace(/[^0-9]/g, "")) || 0;
+
+
+    const oddsInputs =
+        document.querySelectorAll(".odds");
+
+    const resultInputs =
+        document.querySelectorAll(".resultSelect");
+
+
+    let totalOdds = 1;
+
+
+    for (
+        let i = 0;
+        i < oddsInputs.length;
+        i++
+    ) {
+
+        const odds =
+            parseFloat(
+                oddsInputs[i].value
+            ) || 0;
+
+        const result =
+            resultInputs[i].value;
+
+
+        let effectiveOdds = 1;
+
+
+        /* WIN */
+
+        if (result === "win") {
+
+            effectiveOdds = odds;
+
+        }
+
+
+        /* HALF WIN */
+
+        else if (result === "halfwin") {
+
+            effectiveOdds =
+                (odds + 1) / 2;
+
+        }
+
+
+        /* HALF LOSE */
+
+        else if (result === "halfloss") {
+
+            effectiveOdds = 0.5;
+
+        }
+
+
+        /* VOID */
+
+        else if (result === "void") {
+
+            effectiveOdds = 1;
+
+        }
+
+
+        /* LOSE */
+
+        else if (result === "lose") {
+
+            effectiveOdds = 0;
+
+        }
+
+
+        totalOdds *= effectiveOdds;
+
+    }
+
+
+    const payout =
+        stake * totalOdds;
+
+    const profit =
+        payout - stake;
+
+
+    document.getElementById("totalOdds")
+        .textContent =
+        totalOdds.toFixed(4) + "×";
+
+
+    document.getElementById("stakeResult")
+        .textContent =
+        formatRupiah(stake);
+
+
+    document.getElementById("payout")
+        .textContent =
+        formatRupiah(payout);
+
+
+    const profitElement =
+        document.getElementById("profit");
+
+
+    profitElement.textContent =
+        formatRupiah(profit);
+
+
+    if (profit < 0) {
+
+        profitElement.className =
+            "result-value loss-value";
+
+    } else {
+
+        profitElement.className =
+            "result-value profit-value";
+
+    }
+
+}
+
+
+/* =========================================
+   FORMAT RUPIAH
+========================================= */
+
+function formatRupiah(number) {
+
+    return new Intl.NumberFormat(
+        "id-ID",
+        {
+            style: "currency",
+            currency: "IDR",
+            maximumFractionDigits: 0
+        }
+    ).format(number);
+
+}
+
+/* FORMAT MODAL TARUHAN OTOMATIS */
+function formatStakeInput(input) {
+    const raw = input.value.replace(/[^0-9]/g, "");
+
+    if (!raw) {
+        input.value = "";
+        calculate();
+        return;
+    }
+
+    input.value = new Intl.NumberFormat("id-ID").format(parseInt(raw, 10));
+    calculate();
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+addMatch();
+/* Operational dashboard clock */
+function updateClock(){
+    const d = new Date();
+    const pad = n => String(n).padStart(2,"0");
+    const el = document.getElementById("clock");
+    if(el) el.textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+}
+updateClock();
+setInterval(updateClock,1000);
+</script>
+</body>
+</html>
