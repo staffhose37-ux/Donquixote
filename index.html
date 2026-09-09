@@ -1109,7 +1109,7 @@ td.red{
 }
 
 .grid.dp{
-    grid-template-columns:repeat(3,1fr);
+    grid-template-columns:repeat(4,1fr);
 }
 
 .grid.wd{
@@ -2013,6 +2013,21 @@ hr{
                     <div
                         class="value"
                         id="formDP">
+
+                        0
+
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    MINEPAY DP
+
+                    <div
+                        class="value"
+                        id="formDPMinepay">
 
                         0
 
@@ -2984,6 +2999,7 @@ let csvContent="";
 
 let csvParsedData={
     formDP:0,
+    formDPMinepay:0,
     formDPGaruda:0,
     formDPQris:0,
     formWD:0,
@@ -3057,6 +3073,7 @@ function parseCSV(csv){
 
     let d={
         formDP:0,
+        formDPMinepay:0,
         formDPGaruda:0,
         formDPQris:0,
         formWD:0,
@@ -3088,6 +3105,15 @@ function parseCSV(csv){
         ){
 
             d.formDPQris++;
+
+        }
+
+        else if(
+            type==="Deposit" &&
+            by.includes("minepay")
+        ){
+
+            d.formDPMinepay++;
 
         }
 
@@ -3178,6 +3204,7 @@ function renderCSVUI(){
 
     let totalDP=
         csvParsedData.formDP+
+        csvParsedData.formDPMinepay+
         csvParsedData.formDPGaruda+
         csvParsedData.formDPQris;
 
@@ -3191,6 +3218,12 @@ function renderCSVUI(){
         "formDP"
     ).innerText=
         csvParsedData.formDP;
+
+
+    document.getElementById(
+        "formDPMinepay"
+    ).innerText=
+        csvParsedData.formDPMinepay;
 
 
     document.getElementById(
@@ -3235,7 +3268,7 @@ function copyDP(){
 
     navigator.clipboard
         .writeText(
-            `${csvParsedData.formDP}\t${csvParsedData.formDPGaruda}\t${csvParsedData.formDPQris}`
+            `${csvParsedData.formDP}\t${csvParsedData.formDPMinepay}\t${csvParsedData.formDPGaruda}\t${csvParsedData.formDPQris}`
         )
         .then(()=>{
             alert(
