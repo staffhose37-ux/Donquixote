@@ -277,6 +277,70 @@ body::after{
 
 
 /* =========================================================
+   ONE PIECE VIDEO - FULL DASHBOARD BOX
+========================================================= */
+
+#view-dashboard{
+    position:relative;
+    min-height:330px;
+    overflow:hidden;
+    border:1px solid rgba(0,234,255,.35);
+    border-radius:14px;
+    background:#020507;
+    isolation:isolate;
+}
+
+#view-dashboard .content-video-bg{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center center;
+    opacity:1;
+    pointer-events:none;
+    z-index:0;
+    filter:brightness(.95) contrast(1.08) saturate(1.08);
+}
+
+#view-dashboard .content-video-overlay{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg,rgba(0,0,0,.12),rgba(0,0,0,.28));
+    pointer-events:none;
+    z-index:1;
+}
+
+#view-dashboard .empty-placeholder{
+    position:relative;
+    z-index:2;
+    min-height:330px;
+    width:100%;
+    box-sizing:border-box;
+    padding:35px 20px;
+    background:transparent;
+}
+
+#view-dashboard .empty-placeholder > div:first-child{
+    padding:0;
+    border:0;
+    border-radius:0;
+    background:transparent;
+    box-shadow:none;
+    text-shadow:0 2px 9px rgba(0,0,0,.95);
+}
+
+#view-dashboard .empty-placeholder > div:nth-child(2){
+    text-shadow:0 2px 9px rgba(0,0,0,.95);
+}
+
+#view-dashboard .dashboard-links{
+    position:relative;
+    z-index:3;
+}
+
+
+/* =========================================================
    LIGHT SWEEP
 ========================================================= */
 
@@ -1516,11 +1580,10 @@ hr{
 
 <div class="glass-panel">
 
-    <!-- VIDEO BACKGROUND -->
+    <!-- VIDEO BACKGROUND UTAMA -->
     <video autoplay loop muted playsinline class="bg-video-panel">
         <source src="video_616eeacb5c57.mp4" type="video/mp4">
     </video>
-
 
     <!-- HEADER -->
 
@@ -1757,64 +1820,20 @@ hr{
         id="view-dashboard"
         class="tab-content active-view">
 
-        <div class="empty-placeholder">
+        <!-- ONE PIECE VIDEO FULL SATU KOTAK -->
+        <video
+            autoplay
+            loop
+            muted
+            playsinline
+            preload="auto"
+            class="content-video-bg">
+            <source src="onepiece.mp4" type="video/mp4">
+        </video>
 
-            <div>
-                SILAKAN PILIH SALAH SATU MENU DI ATAS UNTUK MEMULAI PROSES DATA
-            </div>
+        <div class="content-video-overlay"></div>
 
-            <div>
-                JALAN PINTAS AKSES CEPAT
-            </div>
 
-            <div class="dashboard-links">
-
-                <a
-                    href="struk.html"
-                    class="dash-link">
-
-                    BUKA STRUK
-
-                </a>
-
-                <a
-                    href="ttm5d.html"
-                    class="dash-link">
-
-                    BUKA TTM5D
-
-                </a>
-
-                <a
-                    href="https://imgbb.com/"
-                    target="_blank"
-                    class="dash-link">
-
-                    IMGBB
-
-                </a>
-
-                <a
-                    href="https://imgur.com/"
-                    target="_blank"
-                    class="dash-link">
-
-                    IMGUR
-
-                </a>
-
-                <a
-                    href="https://trustpos.checkipos.com/"
-                    target="_blank"
-                    class="dash-link">
-
-                    CEK NAWALA
-
-                </a>
-
-            </div>
-
-        </div>
 
     </div>
 
