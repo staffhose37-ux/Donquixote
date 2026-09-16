@@ -1,0 +1,447 @@
+
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Struk Mandiri</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background: #121212;
+      font-family: 'Roboto', sans-serif;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 30px;
+      color: #00c2a8;
+      font-weight: 700;
+    }
+
+    .main-wrapper {
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      max-width: 1100px;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .main-wrapper {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
+    #control-panel {
+      padding: 15px;
+      background: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: 8px;
+      width: 375px;
+      box-sizing: border-box;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      max-width: 100%;
+    }
+
+    #control-panel label {
+      color: #ccc;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    #control-panel label.full-width,
+    #control-panel input.full-width {
+      grid-column: 1 / 3;
+    }
+
+    #control-panel input[type="text"] {
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #555;
+      background: #2b2b2b;
+      color: white;
+      box-sizing: border-box;
+      width: 100%;
+      font-size: 13px;
+    }
+
+    .container {
+      position: relative;
+      width: 375px;
+      max-width: 100%;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .background {
+      width: 100%;
+      display: block;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      font-size: 12px;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    .overlay .field {
+      position: absolute;
+      white-space: normal;
+      text-align: left;
+      font-weight: 400;
+      color: #000;
+      line-height: 1.2;
+    }
+
+    #jam { top: 4px; left: 24px; font-size: 14px; font-weight: 500; color: #444; position: absolute; }
+
+    #tanggal {
+      top: 160px;
+      left: 30px;
+      width: 330px;
+      font-size: 11px;
+      color: #9E9E9E;
+    }
+
+    #nama-penerima {
+      top: 278px;
+      left: 47px;
+      font-size: 18px;
+      font-weight: 900;
+      color: #111;
+    }
+
+    #bank-norek {
+      top: 309px;
+      left: 47px;
+      font-size: 13px;
+      color: #6F6F6F;
+    }
+
+    #nominal {
+      top: 428px;
+      right: 47px;
+      font-size: 16px;
+      font-weight: 900;
+      text-align: right;
+      position: absolute;
+      color: #111;
+    }
+
+    #pengirim {
+      top: 507px;
+      left: 47px;
+      font-size: 18px;
+      font-weight: 900;
+      color: #111;
+    }
+
+    #bankpengirim {
+      top: 537px;
+      left: 47px;
+      font-size: 12px;
+      color: #6F6F6F;
+    }
+
+    #norekpengirim {
+      top: 537px;
+      left: 173px;
+      font-size: 12px;
+      color: #6F6F6F;
+    }
+
+    .button-wrap {
+      display: flex;
+      gap: 10px;
+      z-index: 10;
+      position: relative;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: -300px;
+      left: -212px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 14px;
+      background-color: #00c2a8;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #009c86;
+    }
+
+    .button-accent {
+      background-color: #ffaa00;
+    }
+
+    .button-accent:hover {
+      background-color: #cc8800;
+    }
+    .home-btn{
+      position:fixed; left:50%; bottom:calc(22px + env(safe-area-inset-bottom));
+      transform:translateX(-50%); z-index:9999;
+      display:inline-flex; align-items:center; gap:15px;
+      padding:12px 30px; border-radius:15px; border:1px solid rgba(255,255,255,.15);
+      font-weight:800; font-size:14px; letter-spacing:.10px; text-decoration:none; color:#fff;
+      background:linear-gradient(100deg,#6d28d9,#6366f1,#6d28d9);
+      background-size:200% 100%; animation:slideX 3.2s ease-in-out infinite alternate;
+      box-shadow:0 8px 30px rgba(0,0,0,.35),0 0 18px rgba(99,102,241,.65),0 0 0 1px rgba(255,255,255,.12) inset;
+      transition:transform .2s ease, filter .2s ease, box-shadow .2s ease;
+    }
+    .home-btn:hover{transform:translateX(-50%) translateY(-2px); filter:brightness(1.07)}
+    .home-btn:active{transform:translateX(-50%) translateY(0); filter:brightness(.96)}
+    .home-btn::after{
+      content:""; position:absolute; left:50%; bottom:-14px; transform:translateX(-50%);
+      width:200px; height:30px; border-radius:999px; pointer-events:none;
+      background:radial-gradient(50% 60% at 50% 50%, rgba(200,58,237,.55), rgba(124,58,237,0));
+      filter:blur(6px);
+    }
+    @keyframes slideX{0%{background-position:0% 50%}100%{background-position:100% 50%}}
+    @media (prefers-reduced-motion: reduce){.home-btn{animation:none}}
+  </style>
+</head>
+<body>
+
+<h2>EDIT STRUK MANDIRI</h2>
+
+<div class="main-wrapper">
+  <!-- CONTROL PANEL -->
+  <div id="control-panel">
+    <label class="full-width">
+  Nominal Transfer (misal: 48800000)
+  <input type="text" id="input-nominal"
+         oninput="formatNominal(this); updateStruk();"
+         placeholder="48.800.000"
+         class="full-width">
+</label>
+
+<label class="full-width">
+  Tanggal Transaksi (misal: 11 Jul 2025)
+  <input type="text" id="input-tanggal"
+         oninput="updateStruk()"
+         placeholder="11 Jul 2025"
+         class="full-width">
+</label>
+
+<label class="full-width">
+  Waktu Transaksi Lengkap (misal: 14:21:38 WIB)
+  <input type="text" id="input-waktu-lengkap"
+         oninput="updateStruk()"
+         placeholder="14:21:38 WIB"
+         class="full-width">
+</label>
+
+<label class="full-width">
+  Nomor Referensi (No. Ref.)
+  <input type="text" id="input-ref"
+         oninput="updateStruk()"
+         placeholder="2507111421386591753"
+         class="full-width">
+</label>
+
+<label class="full-width">
+  Nama Penerima
+  <input type="text" id="input-nama-penerima"
+         oninput="updateStruk()"
+         placeholder="Dtnhvcb Perzgp"
+         class="full-width">
+</label>
+
+<label class="full-width">
+  No. Rekening Penerima
+  <input type="text" id="input-norek-penerima"
+         oninput="updateStruk()"
+         placeholder="107007926766023"
+         class="full-width">
+</label>
+
+<label class="full-width">
+  Nama Pengirim
+  <input type="text" id="input-nama-pengirim"
+         oninput="updateStruk()"
+         placeholder="Ghwg Ofwtsro"
+         class="full-width">
+</label>
+
+<label class="full-width">
+  No. Rekening Pengirim (4 digit akhir)
+  <input type="text" id="input-norek-pengirim-suffix"
+         oninput="updateStruk()"
+         placeholder="9435"
+         maxlength="4"
+         class="full-width">
+</label>
+  </div>
+
+  <!-- STRUK -->
+  <div class="container" id="struk">
+    <img src="https://i.imgur.com/u2GrDvu.png" class="background" alt="Struk Mandiri" onerror="this.onerror=null; this.src='https://placehold.co/375x600/FF5733/ffffff?text=Gagal%20Memuat%20Gambar';" />
+    <div class="overlay">
+      <div class="field" id="tanggal">11 Jul 2025 • 14:21:38 WIB • No. Ref.<br>2507111421386591753</div>
+      <div class="field" id="nama-penerima">Dtnhvcb Perzgp</div>
+      <div class="field" id="bank-norek">Bank Mandiri - 107007926766023</div>
+      <div class="field" id="pengirim">Ghwg Ofwtsro</div>
+      <div class="field" id="bankpengirim">Bank Mandiri</div>
+      <div class="field" id="norekpengirim">9435</div>
+      <div class="field" id="nominal">Rp 48.800.000</div>
+    </div>
+  </div>
+<div id="grid" class="grid"></div>
+  <a class="home-btn" href="index.html">← Kembali ke Home</a>
+
+<!-- BUTTONS -->
+<div class="button-wrap">
+  <button class="button-accent" onclick="acakData()">Acak Data & Waktu Sekarang</button>
+  <button onclick="download()">Download PNG</button>
+</div>
+
+<script>
+  const getInputValue = (id) => document.getElementById(id)?.value ?? "";
+
+  function formatNominal(inputElement) {
+    let value = inputElement.value.replace(/[^\d]/g, "");
+    if (value) {
+      inputElement.value = parseInt(value, 10).toLocaleString("id-ID");
+    } else {
+      inputElement.value = "";
+    }
+  }
+
+  function generateRandomName() {
+    const letters = "abcdefghijklmnopqrstuvwxyz";
+    const randomWord = () => {
+      let word = "";
+      const len = Math.floor(Math.random() * 4) + 4;
+      for (let i = 0; i < len; i++) {
+        word += letters[Math.floor(Math.random() * letters.length)];
+      }
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    };
+    return `${randomWord()} ${randomWord()}`;
+  }
+
+  function updateStruk() {
+    const nominalRaw = getInputValue("input-nominal").replace(/[^\d]/g, "");
+    const tanggal = getInputValue("input-tanggal");
+    const waktuLengkap = getInputValue("input-waktu-lengkap");
+    const ref = getInputValue("input-ref");
+    const namaPenerima = getInputValue("input-nama-penerima");
+    const norekPenerima = getInputValue("input-norek-penerima");
+    const namaPengirim = getInputValue("input-nama-pengirim");
+    const norekPengirim = getInputValue("input-norek-pengirim-suffix");
+
+    document.getElementById("tanggal").innerHTML =
+      `${tanggal} • ${waktuLengkap} • No. Ref.<br>${ref}`;
+
+    document.getElementById("nama-penerima").innerText = namaPenerima;
+    document.getElementById("bank-norek").innerText =
+      `Bank Mandiri - ${norekPenerima}`;
+    document.getElementById("pengirim").innerText = namaPengirim;
+    document.getElementById("bankpengirim").innerText = "Bank Mandiri";
+    document.getElementById("norekpengirim").innerText = norekPengirim;
+
+    document.getElementById("nominal").innerText =
+      nominalRaw
+        ? "Rp " + parseInt(nominalRaw, 10).toLocaleString("id-ID")
+        : "";
+  }
+
+  function acakData() {
+    const now = new Date();
+    const jam = `${String(now.getHours()).padStart(2, "0")}:${String(
+      now.getMinutes()
+    ).padStart(2, "0")}:${String(now.getSeconds()).padStart(2, "0")} WIB`;
+
+    const tanggal = now
+      .toLocaleDateString("id-ID", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      })
+      .replace(".", "");
+
+    document.getElementById("input-nominal").value =
+      ((Math.floor(Math.random() * 801) + 200) * 100000).toLocaleString("id-ID");
+
+    document.getElementById("input-tanggal").value = tanggal;
+    document.getElementById("input-waktu-lengkap").value = jam;
+    const nowRef = new Date();
+
+const refTime =
+  nowRef.getFullYear().toString() +
+  String(nowRef.getMonth() + 1).padStart(2, "0") +
+  String(nowRef.getDate()).padStart(2, "0") +
+  String(nowRef.getHours()).padStart(2, "0") +
+  String(nowRef.getMinutes()).padStart(2, "0") +
+  String(nowRef.getSeconds()).padStart(2, "0");
+
+const refAjak = Math.floor(100000 + Math.random() * 900000); // 6 digit acak
+
+document.getElementById("input-ref").value = refTime + refAjak;
+
+    document.getElementById("input-nama-penerima").value =
+      generateRandomName().toUpperCase();
+
+    document.getElementById("input-norek-penerima").value =
+      "10700" + Math.floor(100000000000 + Math.random() * 900000000000);
+
+    document.getElementById("input-nama-pengirim").value =
+      generateRandomName().toUpperCase();
+
+    document.getElementById("input-norek-pengirim-suffix").value =
+      Math.floor(1000 + Math.random() * 9000);
+
+    updateStruk();
+  }
+
+  function download() {
+  updateStruk();
+
+  const struk = document.getElementById("struk");
+
+  html2canvas(struk, {
+    useCORS: true,
+    backgroundColor: "#ffffff", // atau null kalau mau transparan
+    scale: 3,
+    width: struk.offsetWidth,
+    height: struk.offsetHeight,
+    scrollX: 0,
+    scrollY: 0
+  }).then((canvas) => {
+    const link = document.createElement("a");
+    link.download = `struk-mandiri-${Date.now()}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  });
+}
+
+  window.onload = acakData;
+</script>
+</body>
+</html>
